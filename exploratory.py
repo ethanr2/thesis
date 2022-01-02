@@ -16,18 +16,21 @@ from bokeh.layouts import row, column
 
 
 TRUNC = (dt(1969, 2, 25), dt(1997, 1, 1))
-COLS_RGDP = ("gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2")
-COLS_PGDP = ("gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2")
-# Takes RGDP forecasts from the Greenbook dataset
-def get_rgdp():
-    rgdp_df = pd.read_excel("data/GBweb_Row_Format.xlsx", sheet_name="gRGDP")
-    rgdp_df["GBdate"] = pd.to_datetime(rgdp_df["GBdate"], format="%Y%m%d")
-    rgdp_df = rgdp_df.set_index("GBdate", drop=False)
-    dates = rgdp_df.pop("GBdate")
+COLS = {
+    "gRGDP": ("gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2"),
+    "gPGDP": ("gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2"),
+}
 
-    rgdp_df = rgdp_df.loc[(TRUNC[0] < dates) & (dates < TRUNC[1]), COLS_RGDP]
-    rgdp_df = rgdp_df.loc[~rgdp_df["gRGDPF2"].isnull(), :]
-    return rgdp_df.sort_index()
+# Takes RGDP forecasts from the Greenbook dataset
+def get_var(var):
+    df = pd.read_excel("data/GBweb_Row_Format.xlsx", sheet_name=var)
+    df["GBdate"] = pd.to_datetime(df["GBdate"], format="%Y%m%d")
+    df = df.set_index("GBdate", drop=False)
+    dates = df.pop("GBdate")
+
+    df = df.loc[(TRUNC[0] < dates) & (dates < TRUNC[1]), COLS[var]]
+    df = df.loc[~df[var + "F2"].isnull(), :]
+    return df
 
 
 # Takes the intended FFR rates data directly from Romer and Romer's dataset
@@ -69,23 +72,21 @@ def align_dates(rgdp, int_rate):
     return rgdp
 
 
-rgdp = get_rgdp()
+rgdp = get_var("gRGDP")
+df = get_var("gPGDP")
+rgdp = rgdp.join(df)
+rgdp
+#%%
 int_rate = get_intended_rates()
 df = align_dates(rgdp, int_rate)
 # for whatever reason there appears to be missing data in romer and romer's dataset for 1979-10-12? just dropping it for now.
 df = df.dropna()
 #%%
-rgdp = get_rgdp()
 
-df = pd.read_excel("data/GBweb_Row_Format.xlsx", sheet_name="gPGDP")
-df["GBdate"] = pd.to_datetime(df["GBdate"], format="%Y%m%d")
-df = df.set_index("GBdate", drop=False)
-dates = df.pop("GBdate")
 
-df = df.loc[(TRUNC[0] < dates) & (dates < TRUNC[1]), COLS_PGDP]
-df = df.loc[~df["gPGDPF2"].isnull(), :]
+#%%
 
-rgdp = rgdp.join(df)
+
 #%%
 def set_up(x, y, truncated=True, margins=None):
     if truncated:
