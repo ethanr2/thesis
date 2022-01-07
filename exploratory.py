@@ -18,11 +18,11 @@ from bokeh.models.tickers import FixedTicker
 from bokeh.layouts import row, column
 
 
-TRUNC = (dt(1969, 2, 1), dt(1996, 1, 1))
+TRUNC = (dt(1969, 1, 1), dt(1996, 1, 1))
 COLS = {
-    "gRGDP": ("gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2"),
-    "gPGDP": ("gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2"),
-    "UNEMP": ("UNEMPF0"),
+    "gRGDP": ("gRGDPB2", "gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2", "gRGDPF3"),
+    "gPGDP": ("gPGDPB2", "gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2", "gPGDPF3"),
+    "UNEMP": ("UNEMPB1", "UNEMPF0", "UNEMPF1"),
 }
 
 # Takes RGDP forecasts from the Greenbook dataset
@@ -38,9 +38,11 @@ def get_var(var):
 
 
 # Takes the intended FFR rates data directly from Romer and Romer's dataset
-def get_intended_rates(drop_cols = True):
+def get_intended_rates(drop_cols=True):
     if drop_cols:
-        int_rate = pd.read_excel("data/RomerandRomerDataAppendix.xls", usecols=[0, 1, 2])
+        int_rate = pd.read_excel(
+            "data/RomerandRomerDataAppendix.xls", usecols=[0, 1, 2]
+        )
     else:
         int_rate = pd.read_excel("data/RomerandRomerDataAppendix.xls")
     int_rate["MTGDATE"] = int_rate["MTGDATE"].astype(str)
@@ -83,7 +85,7 @@ raw_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
 int_rate = get_intended_rates()
 raw_data = align_dates(raw_data, int_rate)
 
-# For whatever reason there appears to be missing data in romer and romer's dataset for 1979-10-12? 
+# For whatever reason there appears to be missing data in romer and romer's dataset for 1979-10-12?
 # just dropping it for now.
 # Missing GB data on mtg_date 1971-08-24, GB_date 1971-8-20
 raw_data = raw_data.dropna()
@@ -97,13 +99,16 @@ for col in COLS["gPGDP"]:
 
 df = df.dropna()
 
-model = smf.ols(("diff_ffr ~ ffr + gRGDPB1 + gRGDPF0 + gRGDPF1 + gRGDPF2"
-                 "+ diff_gRGDPB1 + diff_gRGDPF0 + diff_gRGDPF1 + diff_gRGDPF2" 
-                 "+ gPGDPB1 + gPGDPF0 + gPGDPF1 + gPGDPF2"
-                 "+ diff_gPGDPB1 + diff_gPGDPF0 + diff_gPGDPF1 + diff_gPGDPF2"
-                 "+ UNEMPF0"),
-                data=df
-                )
+model = smf.ols(
+    (
+        "diff_ffr ~ ffr + gRGDPB1 + gRGDPF0 + gRGDPF1 + gRGDPF2"
+        "+ diff_gRGDPB1 + diff_gRGDPF0 + diff_gRGDPF1 + diff_gRGDPF2"
+        "+ gPGDPB1 + gPGDPF0 + gPGDPF1 + gPGDPF2"
+        "+ diff_gPGDPB1 + diff_gPGDPF0 + diff_gPGDPF1 + diff_gPGDPF2"
+        "+ UNEMPF0"
+    ),
+    data=df,
+)
 
 
 res = model.fit()
@@ -113,10 +118,16 @@ res.summary()
 
 # We need to realign the quarters for the diff terms...
 
-romer_df = get_intended_rates(False)
-temp = pd.concat([romer_df["IGRDM"], df["diff_gPGDPB1"]], axis = 1)
-temp = pd.concat([romer_df["IGRDM"], df["diff_gPGDPB1"]], axis = 1)
-temp
+stacked = raw_data.drop(["GBdate", "ffr", "diff_ffr"], axis=1)
+stacked = stacked.stack().reset_index()
+stacked["var"] = stacked["level_1"].apply(lambda x: x[:-2])
+
+REL_QUARTER_DICT = {"B2": -2, "B1": -1, "F0": 0, "F1": 1, "F2": 2, "F3": 3}
+stacked["rel_quarter"] = stacked["level_1"].apply(lambda x: REL_QUARTER_DICT[x[-2:]])
+stacked = stacked.drop("level_1", axis=1)
+# stacked.columns = ["mtg_date", "var", "forecast"]
+# stacked["quarter"] = stacked["mtg_date"].apply(lambda x: (x.month - 1)//3 + 1 + 4 * (x.year - TRUNC[0].year))
+stacked
 #%%
 def set_up(x, y, truncated=True, margins=None):
     if truncated:
