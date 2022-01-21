@@ -18,11 +18,11 @@ from bokeh.models.tickers import FixedTicker
 from bokeh.layouts import row, column
 
 
-TRUNC = (dt(1969, 1, 1), dt(1996, 1, 1))
+TRUNC = (dt(1969, 1, 1), dt(1997, 1, 1))
 COLS = {
     "gRGDP": ("gRGDPB2", "gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2", "gRGDPF3"),
     "gPGDP": ("gPGDPB2", "gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2", "gPGDPF3"),
-    "UNEMP": ("UNEMPB1", "UNEMPF0", "UNEMPF1"),
+    "UNEMP": ("UNEMPF0"),
 }
 
 # Takes RGDP forecasts from the Greenbook dataset
@@ -64,7 +64,7 @@ def get_intended_rates(drop_cols=True):
 def align_dates(df, int_rate):
     ir_date = int_rate.pop("mtg_date")
     df_date = df.index.to_series()
-
+    #return df_date
     # Corresponding MTG date associated with greenbook forecast
     df["mtg_date"] = pd.NaT
 
@@ -72,39 +72,81 @@ def align_dates(df, int_rate):
         i = df_date.searchsorted(date) - 1
         # if i == 269:
         #     break
+        # if df_date[i] == dt(year = 1979, month = 9, day = 12):
+        #         continue
         df.loc[df_date[i], "mtg_date"] = date
-
-        print("ir_date: {}, GB_Date: {}".format(date, df_date.iloc[i]))
-    df = df.reset_index().set_index("mtg_date")
+        print(i, "ir_date: {}, GB_Date: {}".format(date, df_date.iloc[i]))
+        
+    df = df.loc[~df["mtg_date"].isna(),:]    
+    df = df.reset_index().set_index(["mtg_date"])
     df["ffr"] = int_rate["OLDTARG"]
     df["diff_ffr"] = int_rate["DTARG"]
     return df
 
+# We need to realign the quarters for the diff terms...
+def calc_diffs(raw_data):
+    stacked = raw_data.drop(["GBdate", "ffr", "diff_ffr", "UNEMPF0"], axis=1)
+    stacked = stacked.stack().reset_index()
+    stacked["var"] = stacked["level_1"].apply(lambda x: x[:-2])
+    
+    REL_QUARTER_DICT = {"B2": -2, "B1": -1, "F0": 0, "F1": 1, "F2": 2, "F3": 3}
+    stacked["rel_quarter"] = stacked["level_1"].apply(lambda x: REL_QUARTER_DICT[x[-2:]])
+    stacked = stacked.drop("level_1", axis=1)
+    
+    get_abs_quarter= lambda x: (x.month - 1)//3 + 1 + 4 * (x.year - TRUNC[0].year)
+    stacked["abs_quarter"] = stacked["mtg_date"].apply(get_abs_quarter) + stacked["rel_quarter"]
+    
+    
+    groups = stacked.groupby("mtg_date")
+    mtg_dates = raw_data.index.tolist()
+    
+    diffs = {}
+    
+    for m in range(1, len(mtg_dates)):
+        #print(m, mtg_dates[m])
+        group = groups.get_group(mtg_dates[m])
+        last_group = groups.get_group(mtg_dates[m-1])
+        
+        for i in range(-1,3):
+            temp = group.loc[group["rel_quarter"] == i,:].set_index("var")
+            if not temp.any().any():
+                continue
+            j = temp["abs_quarter"].iloc[0]
+            temp_last = last_group.loc[last_group["abs_quarter"] == j,:].set_index("var")
+            
+            diffs[(mtg_dates[m], i)] =  round(temp[0] - temp_last[0], 1)
+    
+    diffs = pd.DataFrame(diffs).T.stack().reset_index()
+    
+    diffs["var"] = "diff_" + diffs["var"] + diffs["level_1"].astype(str)
+    diffs["var"] = diffs["var"].apply(lambda x: x.replace("-1", "M"))
+    diffs["mtg_date"] = diffs["level_0"]
+    diffs = diffs.drop(["level_0","level_1"], axis = 1)
+    
+    return pd.pivot_table(diffs, values = 0, index = "mtg_date", columns = "var")
 
 raw_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
+
 int_rate = get_intended_rates()
 raw_data = align_dates(raw_data, int_rate)
 
 # For whatever reason there appears to be missing data in romer and romer's dataset for 1979-10-12?
 # just dropping it for now.
 # Missing GB data on mtg_date 1971-08-24, GB_date 1971-8-20
-raw_data = raw_data.dropna()
-print(raw_data)
-#%%
-df = raw_data.copy()
-for col in COLS["gRGDP"]:
-    df["diff_" + col] = df[col].diff(1)
-for col in COLS["gPGDP"]:
-    df["diff_" + col] = df[col].diff(1)
 
-df = df.dropna()
+diffs = calc_diffs(raw_data)
+data = raw_data.merge(diffs, how = "left", on= "mtg_date").drop(["gRGDPB2", "gRGDPF3", "gPGDPB2", "gPGDPF3"], axis = 1).dropna()
+print(data)
+#%%
+df = data.copy()
+
 
 model = smf.ols(
     (
         "diff_ffr ~ ffr + gRGDPB1 + gRGDPF0 + gRGDPF1 + gRGDPF2"
-        "+ diff_gRGDPB1 + diff_gRGDPF0 + diff_gRGDPF1 + diff_gRGDPF2"
+        "+ diff_gRGDPM + diff_gRGDP0 + diff_gRGDP1 + diff_gRGDP2"
         "+ gPGDPB1 + gPGDPF0 + gPGDPF1 + gPGDPF2"
-        "+ diff_gPGDPB1 + diff_gPGDPF0 + diff_gPGDPF1 + diff_gPGDPF2"
+        "+ diff_gPGDPM + diff_gPGDP0 + diff_gPGDP1 + diff_gPGDP2"
         "+ UNEMPF0"
     ),
     data=df,
@@ -115,19 +157,17 @@ res = model.fit()
 res.summary()
 
 #%%
+romer_data = get_intended_rates(False)
+romer_data["rep_shock"] = res.resid
+residuals = romer_data.loc[:, ["RESIDF", "rep_shock"]].dropna()
 
-# We need to realign the quarters for the diff terms...
+romer_data["diff_gPGDPM"] = data["diff_gPGDPM"]
+inf_now = romer_data.loc[:, ["IGRDM", "diff_gPGDPM"]].dropna()
 
-stacked = raw_data.drop(["GBdate", "ffr", "diff_ffr"], axis=1)
-stacked = stacked.stack().reset_index()
-stacked["var"] = stacked["level_1"].apply(lambda x: x[:-2])
-
-REL_QUARTER_DICT = {"B2": -2, "B1": -1, "F0": 0, "F1": 1, "F2": 2, "F3": 3}
-stacked["rel_quarter"] = stacked["level_1"].apply(lambda x: REL_QUARTER_DICT[x[-2:]])
-stacked = stacked.drop("level_1", axis=1)
-# stacked.columns = ["mtg_date", "var", "forecast"]
-# stacked["quarter"] = stacked["mtg_date"].apply(lambda x: (x.month - 1)//3 + 1 + 4 * (x.year - TRUNC[0].year))
-stacked
+corrected_inf = inf_now["IGRDM"] == inf_now["diff_gPGDPM"]
+for i, row in inf_now.iterrows():
+    print(row["IGRDM"], row["diff_gPGDPM"], row["IGRDM"] == row["diff_gPGDPM"])
+corrected_inf.sum()/ corrected_inf.size
 #%%
 def set_up(x, y, truncated=True, margins=None):
     if truncated:
@@ -205,14 +245,14 @@ def chart1(df):
 
 # Chart of a regression e.g. inflation vs money supply
 def chart2(df):
-    xdata, ydata, xrng, yrng = set_up(df["_"], df["_"], truncated=False, margins=0.005)
+    xdata, ydata, xrng, yrng = set_up(df.iloc[:,0]/100, df.iloc[:,1]/100, truncated=False, margins=0.005)
 
     p = figure(
         width=500,
         height=500,
-        title="_",
-        x_axis_label="_",
-        y_axis_label="_",
+        title="Reproduction Attempt",
+        x_axis_label="Romer and Romer IGRDM",
+        y_axis_label="Reproduced IGRDM",
         y_range=yrng,
         x_range=xrng,
     )
@@ -230,6 +270,8 @@ def chart2(df):
     p.xaxis.formatter = NumeralTickFormatter(format="0.0%")
     p.yaxis.formatter = NumeralTickFormatter(format="0.0%")
 
-    export_png(p, filename="images/chart2.png")
+    export_png(p, filename="imgs/chart2.png")
 
     return p
+
+show(chart2(inf_now))
