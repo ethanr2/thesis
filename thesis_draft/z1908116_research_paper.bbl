@@ -1,0 +1,120 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Bauer%
+\ \BBA {} Swanson%
+}{%
+Bauer%
+\ \BBA {} Swanson%
+}{%
+{\protect \APACyear {2020}}%
+}]{%
+Bauer2020}
+\APACinsertmetastar {%
+Bauer2020}%
+\begin{APACrefauthors}%
+Bauer, M.%
+\BCBT {}\ \BBA {} Swanson, E\BPBI T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2020}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{The Fed's Response to Economic News Explains the “Fed
+  Information Effect”}} {{The Fed's Response to Economic News Explains the
+  “Fed Information Effect”}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Federal Reserve Bank of San Francisco, Working Paper
+  Series}{}{}{01--62}.
+\newblock
+\begin{APACrefDOI} \doi{10.24148/wp2020-06} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Gertler%
+\ \BBA {} Karadi%
+}{%
+Gertler%
+\ \BBA {} Karadi%
+}{%
+{\protect \APACyear {2015}}%
+}]{%
+Gertler2015}
+\APACinsertmetastar {%
+Gertler2015}%
+\begin{APACrefauthors}%
+Gertler, M.%
+\BCBT {}\ \BBA {} Karadi, P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Monetary policy surprises, credit costs, and economic
+  activity}} {{Monetary policy surprises, credit costs, and economic
+  activity}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{American Economic Journal: Macroeconomics}{7}{1}{}.
+\newblock
+\begin{APACrefDOI} \doi{10.1257/mac.20130329} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nakamura%
+\ \BBA {} Steinsson%
+}{%
+Nakamura%
+\ \BBA {} Steinsson%
+}{%
+{\protect \APACyear {2018}}%
+}]{%
+Nakamura2018}
+\APACinsertmetastar {%
+Nakamura2018}%
+\begin{APACrefauthors}%
+Nakamura, E.%
+\BCBT {}\ \BBA {} Steinsson, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2018}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{High-frequency identification of monetary
+  non-neutrality: The information effect}} {{High-frequency identification of
+  monetary non-neutrality: The information effect}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Quarterly Journal of Economics}{133}{3}{}.
+\newblock
+\begin{APACrefDOI} \doi{10.1093/QJE/QJY004} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Romer%
+\ \BBA {} Romer%
+}{%
+Romer%
+\ \BBA {} Romer%
+}{%
+{\protect \APACyear {2004}}%
+}]{%
+Romer2004}
+\APACinsertmetastar {%
+Romer2004}%
+\begin{APACrefauthors}%
+Romer, C\BPBI D.%
+\BCBT {}\ \BBA {} Romer, D\BPBI H.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2004}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{A New Measure of Monetary Shocks: Derivation and
+  Implications}} {{A New Measure of Monetary Shocks: Derivation and
+  Implications}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{American Economic Review}{94}{4}{1055--1084}.
+\newblock
+\begin{APACrefDOI} \doi{10.1257/0002828042002651} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}

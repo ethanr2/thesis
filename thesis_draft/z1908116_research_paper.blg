@@ -1,0 +1,60 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: z1908116_research_paper.aux
+Reallocating 'name_of_file' (item size: 1) to 8 items.
+The style file: apacite.bst
+Reallocating 'name_of_file' (item size: 1) to 5 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 9000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: refs.bib
+Warning--I didn't find a database entry for "Gurkaynak2011"
+apacite.bst [2013/07/21 v6.03 APA bibliography style]
+You've used 4 entries,
+            6951 wiz_defined-function locations,
+            1302 strings with 11484 characters,
+and the built_in function-call counts, 7457 in all, are:
+= -- 918
+> -- 56
+< -- 349
++ -- 365
+- -- 8
+* -- 502
+:= -- 1430
+add.period$ -- 16
+call.type$ -- 4
+change.case$ -- 68
+chr.to.int$ -- 0
+cite$ -- 8
+duplicate$ -- 181
+empty$ -- 293
+format.name$ -- 96
+if$ -- 1399
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 0
+newline$ -- 111
+num.names$ -- 32
+pop$ -- 97
+preamble$ -- 1
+purify$ -- 16
+quote$ -- 0
+skip$ -- 489
+stack$ -- 0
+substring$ -- 399
+swap$ -- 116
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 1
+type$ -- 320
+warning$ -- 0
+while$ -- 28
+width$ -- 0
+write$ -- 134
+(There was 1 warning)

@@ -45,7 +45,9 @@ ROMER_REP_DICT = {
     "UNEMPF0": "GRAU0",
     "shock": "RESID",
 }
-STOCK_MKT_DATABASE = "https://raw.githubusercontent.com/vijinho/sp500/master/csv/sp500.csv"
+STOCK_MKT_DATABASE = (
+    "https://raw.githubusercontent.com/vijinho/sp500/master/csv/sp500.csv"
+)
 
 # Takes RGDP forecasts from the Greenbook dataset
 def get_var(var):
@@ -101,12 +103,8 @@ def align_dates(df, int_rate):
     )
     df["mtg_date"] = int_rate["fomc"]
     df["ffr_shock"] = int_rate["ff.shock.0"]
-    df = (
-        df.loc[~df["mtg_date"].isna(), :]
-        .reset_index()
-        .set_index(["mtg_date"])
-    )
-    
+    df = df.loc[~df["mtg_date"].isna(), :].reset_index().set_index(["mtg_date"])
+
     print(df)
     return df
 
@@ -199,24 +197,26 @@ model = smf.ols(
 
 res = model.fit()
 print(res.summary())
-data["pure_shock"] = res.resid/100
-data["ffr_shock"] = data["ffr_shock"]/100
-print(data)
-#%%
-# Here, we're working with stock market data.
-stock_df = pd.read_csv(STOCK_MKT_DATABASE,
-                       index_col = "Date",
-                       parse_dates=True)
+data["pure_shock"] = res.resid / 100
+data["ffr_shock"] = data["ffr_shock"] / 100
 
-stock_df
+stock_df = pd.read_csv(STOCK_MKT_DATABASE, index_col="Date", parse_dates=True)
+
+data["stock_returns"] = np.log(stock_df.loc[data.index, "Close"]) - np.log(
+    stock_df.loc[data.index, "Open"]
+)
+
+print(data)
 #%%
 from bokeh.io import export_png, output_file, show
 from bokeh.plotting import figure
 from bokeh.models import NumeralTickFormatter, LabelSet, ColumnDataSource
 from bokeh.models.tickers import FixedTicker
 from bokeh.layouts import row, column
+
 NIUred = (200, 16, 46)
 NIUpantone = (165, 167, 168)
+
 
 def set_up(x, y, truncated=True, margins=None):
     if truncated:
@@ -240,15 +240,15 @@ def set_up(x, y, truncated=True, margins=None):
 def chart2(df):
     df = df.dropna()
     xdata, ydata, xrng, yrng = set_up(
-        df.iloc[:, 0] / 100, df.iloc[:, 1] / 100, truncated=False, margins=0.005
+        df.iloc[:, 0], df.iloc[:, 1], truncated=False, margins=0.005
     )
 
     p = figure(
         width=500,
         height=500,
-        title="Reproduction Attempt: " + df.columns[0],
-        x_axis_label="Romer and Romer " + df.columns[0],
-        y_axis_label="Reproduced " + df.columns[0],
+        title="Effect of Monetary Policy on the Stock Market",
+        x_axis_label="Monetary Policy Shock",
+        y_axis_label="Log Change in S&P500 Price",
         y_range=yrng,
         x_range=xrng,
     )
@@ -271,29 +271,30 @@ def chart2(df):
 
     return p
 
+
 def chart1(df, series, title, name):
     xdata, ydata, xrng, yrng = set_up(df.index, df[series], truncated=False)
     scale = 1
     p = figure(
-        width= int(1000 * scale),
+        width=int(1000 * scale),
         height=int(666 * scale),
         title=title,
         x_axis_label="Date",
         x_axis_type="datetime",
         y_range=yrng,
         x_range=xrng,
-       # toolbar_location=None,
+        # toolbar_location=None,
     )
     p.line(xrng, [0, 0], color="black", width=1)
 
     p.line(xdata, ydata, color=NIUred, width=2)
 
-    #p.xaxis[0].ticker.desired_num_ticks = 10
+    # p.xaxis[0].ticker.desired_num_ticks = 10
     # p.legend.location = "bottom_right"
     p.xgrid.grid_line_color = None
     p.ygrid.grid_line_color = None
     p.yaxis.formatter = NumeralTickFormatter(format="0.00%")
-    #p.xaxis.major_label_orientation = math.pi/4
+    # p.xaxis.major_label_orientation = math.pi/4
     p.title.text_font_size = "16pt"
     p.xaxis.axis_label_text_font_size = "14pt"
     p.yaxis.axis_label_text_font_size = "14pt"
@@ -302,6 +303,52 @@ def chart1(df, series, title, name):
 
     return p
 
+
 # plot = chart1(data, "pure_shock", "Purified Indicator", "gk15.png")
-# plot.line(data["ffr_shock"].index, data["ffr_shock"]/100, color=NIUpantone, width=2)
+# plot.line(data["ffr_shock"].index, data["ffr_shock"], color=NIUpantone, width=2)
 # show(plot)
+
+
+# Plot the effect of our indicators on the stock market
+df = data.loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
+NIUred = (200, 16, 46)
+NIUpantone = (165, 167, 168)
+
+xdata, ydata, xrng, yrng = set_up(df["ffr_shock"], df["stock_returns"], truncated=False)
+p = figure(
+    width=600,
+    height=600,
+    title="Effect of Monetary Policy on the Stock Market",
+    x_axis_label="Monetary Policy Shock",
+    y_axis_label="Log Change in S&P500 Price",
+    y_range=yrng,
+    x_range=xrng,
+)
+p.line(xrng, [0, 0], color="black")
+p.line([0, 0], yrng, color="black")
+
+
+def add_reg_line(p, xdata, ydata, color, leg_title=""):
+    slope, intercept, r_value, p_value, std_err = stats.linregress(xdata, ydata)
+    leg = "R = {:.4f}, Slope = {:.4f}".format(r_value, slope)
+    p.line(xdata, xdata * slope + intercept, legend_label=leg_title + leg, color=color)
+    p.circle(xdata, ydata, color=color, size=2)
+
+
+add_reg_line(p, xdata, ydata, NIUred, "Futures Shock: ")
+add_reg_line(p, df["pure_shock"], ydata, NIUpantone, "Purified Shock: ")
+
+p.xaxis[0].ticker.desired_num_ticks = 10
+p.xgrid.grid_line_color = None
+p.ygrid.grid_line_color = None
+p.xaxis.formatter = NumeralTickFormatter(format="0.0%")
+p.yaxis.formatter = NumeralTickFormatter(format="0.0%")
+p.legend.location = "bottom_right"
+
+show(p)
+
+#%%
+
+# Hypthesis Testing
+
+# Bootstrap this mfer
