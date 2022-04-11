@@ -60,6 +60,37 @@ Gertler, M.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Gurkaynak%
+, Sack%
+\BCBL {}\ \BBA {} Swanson%
+}{%
+Gurkaynak%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2011}}%
+}]{%
+Gurkaynak2011}
+\APACinsertmetastar {%
+Gurkaynak2011}%
+\begin{APACrefauthors}%
+Gurkaynak, R\BPBI S.%
+, Sack, B\BPBI P.%
+\BCBL {}\ \BBA {} Swanson, E\BPBI T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Do Actions Speak Louder Than Words? The Response of
+  Asset Prices to Monetary Policy Actions and Statements}} {{Do Actions Speak
+  Louder Than Words? The Response of Asset Prices to Monetary Policy Actions
+  and Statements}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{SSRN Electronic Journal}{}{}{}.
+\newblock
+\begin{APACrefDOI} \doi{10.2139/ssrn.633281} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Nakamura%
 \ \BBA {} Steinsson%
 }{%
@@ -86,6 +117,35 @@ Nakamura, E.%
 \APACjournalVolNumPages{Quarterly Journal of Economics}{133}{3}{}.
 \newblock
 \begin{APACrefDOI} \doi{10.1093/QJE/QJY004} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Romer%
+\ \BBA {} Romer%
+}{%
+Romer%
+\ \BBA {} Romer%
+}{%
+{\protect \APACyear {2000}}%
+}]{%
+Romer2000}
+\APACinsertmetastar {%
+Romer2000}%
+\begin{APACrefauthors}%
+Romer, C\BPBI D.%
+\BCBT {}\ \BBA {} Romer, D\BPBI H.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2000}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{Federal reserve information and the behavior of
+  interest rates}} {{Federal reserve information and the behavior of interest
+  rates}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{American Economic Review}{90}{3}{}.
+\newblock
+\begin{APACrefDOI} \doi{10.1257/aer.90.3.429} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
