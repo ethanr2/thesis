@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['analysis.py']
+recent_files = ['analysis.py', '2nd_stage_summary_stats.tex', 'data\\GK_data\\factor_data.csv']
 

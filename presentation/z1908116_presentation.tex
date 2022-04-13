@@ -1,0 +1,152 @@
+
+\documentclass[xcolor=dvipsnames, compress, t]{beamer}
+
+\usetheme{CambridgeUS}
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{stmaryrd}
+\usepackage{etoolbox}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric, arrows}
+\usepackage{booktabs}
+
+
+\usepackage{dsfont}
+\usepackage{etoolbox}
+\usepackage{accents}
+\usepackage{sgame}
+\usepackage{epstopdf}
+\usepackage{wrapfig}
+\usepackage{tabto}
+
+\setbeamertemplate{theorems}[numbered]
+\undef{\lemma}
+\newtheorem{lemma}{\translate{Lemma}} %gives own numbered lemmas
+\newtheorem{prop}{Proposition}
+\newtheorem{defin}{Definition}
+\newenvironment{sketch}[1][Sketch of Proof.]{ \begin{trivlist} \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+%colors
+
+\definecolor{NIUred}{RGB}{200,16,46 } 
+\definecolor{NIUblack}{RGB}{0,0,0}
+\definecolor{NIUpantone}{RGB}{165,167,168}
+
+\setbeamercolor{palette primary}{bg=NIUblack,fg=white}
+\setbeamercolor{palette secondary}{bg=NIUpantone,fg=white}
+\setbeamercolor{palette tertiary}{bg=NIUred,fg=white}
+\setbeamercolor{palette quaternary}{bg=NIUred,fg=white}
+\setbeamercolor{structure}{fg=NIUred} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=NIUred} % TOC sections
+%\setbeamercolor{subsection in head/foot}{bg=NIUpantone,fg=white}
+%%Special Commands
+\newcommand\munderbar[1]{%
+	\underaccent{\bar}{#1}}
+
+\newcommand{\der}{\mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+
+\newcommand{\vs}{\vspace{\baselineskip}}
+\newcommand{\vf}{\vspace{5pt}}
+\newcommand{\draw}{{\color{Plum} \bf Drawing.}} 
+%use this if there is a drawing that you can't include
+\newcommand{\wts}[1]{{\color{Orchid} \textbf{\underline{WTS}:}  #1}} 
+%use this for what to show!
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{enumerate items}[default]
+
+%%Don't change things above this%%
+
+%%%%%%%%%%%%%%%%%%
+
+
+\title[ECON 592: Research Proposal]{Monetary Shocks - Markets or Forecasters?}
+\author{Ethan Rahman}
+\institute[NIU]{\vspace{-10pt} \large Northern Illinois University}
+\date{Feburary 21, 2022}
+
+\renewcommand{\thedefin}{4.\Alph{defin}} %ended on 4.C
+\setcounter{defin}{3}
+
+\renewcommand{\thetheorem}{4.\arabic{theorem}} %ended on 4.2
+\setcounter{theorem}{2}
+
+\renewcommand{\thelemma}{4.\roman{lemma}}
+\setcounter{lemma}{0}
+
+\usepackage[maxcitenames=3,style=apa]{biblatex}
+\addbibresource{refs.bib}
+\renewcommand*{\bibfont}{\scriptsize}
+
+\setbeamerfont{caption}{size=\tiny}
+
+\begin{document}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	\begin{frame}{Introduction}
+		\begin{itemize}
+			\item Monetary Policy 
+			\begin{itemize}
+				\item<2-> Crucial for stabilizing the business cycle
+				\item<3-> Maximum employment and stable prices
+				\item<4-> Faster and more responsive than fiscal policy
+			\end{itemize}
+		\end{itemize}
+		\begin{figure}
+			\includegraphics<5->[width=.66\textwidth]{ffrRgdp.png}
+			\visible<5->{\caption{\cite{beaRGDP} \cite{bogFFER}}}
+		\end{figure}
+	\end{frame}
+	\begin{frame}{Related Literature}
+		
+		
+		\begin{itemize}
+			\item \citeauthor{Romer2004} (\citeyear{Romer2004}) 
+			\begin{itemize}
+				\item<2-> Federal Reserve's internal "Greenbook forecasts"
+				\item<2-> Regress FFR changes on forecasts
+				\item<2-> Use the residual as indicator
+			\end{itemize}
+			\item<3-> \citeauthor{Nakamura2018} (\citeyear{Nakamura2018})
+			\begin{itemize}
+				\item<4-> FFR Futures contract prices
+				\item<4-> High frequency identification
+				\item<4-> Unexpected rate changes are the indicator
+			\end{itemize}
+			\item<5-> \citeauthor{Bauer2020} (\citeyear{Bauer2020}) 
+			\begin{itemize}
+				\item<6-> Presents "Fed-information effect" 
+				\item<6-> Implies Nakamura indicator has omitted variable bias
+			\end{itemize}
+		\end{itemize}
+		
+	\end{frame}
+	\begin{frame}{Research Plan}
+		\begin{enumerate}
+			\item Gather data
+			\begin{itemize}
+				\item<2-> Greenbook forecasts 
+				\item<3-> FFR futures prices
+				\item<4-> Forecasts (e.g. Blue Chip) or stock market ETF data
+			\end{itemize}
+			\item<5-> Replicate the indicators 
+			\begin{itemize}
+				\item<6-> Extended samples
+				\item<7-> Compare with original results 
+			\end{itemize}
+			\item<8-> Test Fed information effect
+			\begin{itemize}
+				\item<9-> Regress change in BC forecasts (or ETF Price) on indicators
+				\item<10-> Difference of slopes test 
+			\end{itemize}
+		\end{enumerate}
+	\end{frame}
+	\begin{frame}{References}
+		\bibbysection
+	\end{frame}
+\end{document}

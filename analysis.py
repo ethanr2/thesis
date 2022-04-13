@@ -12,6 +12,7 @@ from time import time
 import numpy as np
 import pandas as pd
 from scipy import stats
+from scipy.io import loadmat
 
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
@@ -170,43 +171,76 @@ def calc_diffs(raw_data):
     return diffs
 
 
-gb_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
-# Reminder to switch to GK data later.
-ffr_shock = pd.read_excel("data/NS.xlsx", sheet_name="shocks", index_col=0)
-raw_data = align_dates(gb_data, ffr_shock)
-diffs = calc_diffs(raw_data)
-data = (
-    raw_data.merge(diffs, how="left", on="mtg_date").drop(
-        ["gRGDPB2", "gRGDPF3", "gPGDPB2", "gPGDPF3"], axis=1
+def get_data(source="data/NS.xlsx"):
+    gb_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
+    # Reminder to switch to GK data later.
+    ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
+    raw_data = align_dates(gb_data, ffr_shock)
+    diffs = calc_diffs(raw_data)
+    data = (
+        raw_data.merge(diffs, how="left", on="mtg_date").drop(
+            ["gRGDPB2", "gRGDPF3", "gPGDPB2", "gPGDPF3"], axis=1
+        )
+        # .dropna()
     )
-    # .dropna()
-)
-data = data.rename(ROMER_REP_DICT, axis=1)
+    return data.rename(ROMER_REP_DICT, axis=1)
 
-model = smf.ols(
-    (
-        "ffr_shock ~ "
-        "  GRAYM + GRAY0 + GRAY1 + GRAY2"
-        "+ IGRYM + IGRY0 + IGRY1 + IGRY2"
-        "+ GRADM + GRAD0 + GRAD1 + GRAD2"
-        "+ IGRDM + IGRD0 + IGRD1 + IGRD2"
-        "+ GRAU0"
-    ),
-    data=data,
-)
 
-res = model.fit()
-print(res.summary())
-data["pure_shock"] = res.resid / 100
-data["ffr_shock"] = data["ffr_shock"] / 100
+def construct_indicator(data, resample=False):
+    if resample:
+        data = data.sample(frac=resample)
+    model = smf.ols(
+        (
+            "ffr_shock ~ "
+            "  GRAYM + GRAY0 + GRAY1 + GRAY2"
+            "+ IGRYM + IGRY0 + IGRY1 + IGRY2"
+            "+ GRADM + GRAD0 + GRAD1 + GRAD2"
+            "+ IGRDM + IGRD0 + IGRD1 + IGRD2"
+            "+ GRAU0"
+        ),
+        data=data,
+    )
 
-stock_df = pd.read_csv(STOCK_MKT_DATABASE, index_col="Date", parse_dates=True)
+    res = model.fit()
+    if not resample:
+        print(res.summary())
+    data["pure_shock"] = res.resid / 100
+    data["ffr_shock"] = data["ffr_shock"] / 100
 
-data["stock_returns"] = np.log(stock_df.loc[data.index, "Close"]) - np.log(
-    stock_df.loc[data.index, "Open"]
-)
+    stock_df = pd.read_csv(STOCK_MKT_DATABASE, index_col="Date", parse_dates=True)
 
-print(data)
+    data["stock_returns"] = np.log(stock_df.loc[data.index, "Close"]) - np.log(
+        stock_df.loc[data.index, "Open"]
+    )
+    return data.loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
+
+# Bootstrap
+def regressions(sample):
+    mod1 = smf.ols("stock_returns ~ ffr_shock", data=sample).fit()
+    mod2 = smf.ols("stock_returns ~ pure_shock", data=sample).fit()
+    return pd.Series(
+        [mod1.params["ffr_shock"], mod2.params["pure_shock"]],
+        index=["ffr_shock", "pure_shock"],
+    )
+
+
+def bootstrap(N, frac):
+    samples = []
+    print("Preparing Samples.")
+    t0 = time()
+    for i in range(N):
+        samples.append(construct_indicator(data, frac))
+        print(i, round(time() - t0, 2))
+
+    samples = pd.Series(samples)
+    coefs = samples.apply(regressions)
+    return coefs
+
+data = get_data()
+full_sample = construct_indicator(data)
+full_sample.to_pickle("data/processed_data/full_sample.pkl")
+#%%
+coefs = bootstrap(10000, 0.80)
 #%%
 from bokeh.io import export_png, output_file, show
 from bokeh.plotting import figure
@@ -216,6 +250,48 @@ from bokeh.layouts import row, column
 
 NIUred = (200, 16, 46)
 NIUpantone = (165, 167, 168)
+
+
+def make_hist(title, hist, edges, pdf, x):
+    p = figure(title=title, tools="", background_fill_color="white")
+    p.quad(
+        top=hist,
+        bottom=0,
+        left=edges[:-1],
+        right=edges[1:],
+        fill_color=NIUred,
+        line_color=NIUred,
+        alpha=1,
+    )
+    p.line(x, pdf, line_color=NIUpantone, line_width=4, alpha=0.7, legend_label="PDF")
+    # p.line(x, cdf, line_color="orange", line_width=2, alpha=0.7, legend_label="CDF")
+    p.line([0, 0], [0, hist.max()], color="black", line_width=2)
+    p.y_range.start = 0
+    p.legend.location = "center_right"
+    p.legend.background_fill_color = "#fefefe"
+    p.xaxis.axis_label = "x"
+    p.yaxis.axis_label = "Density"
+    p.grid.grid_line_color = "white"
+    return p
+
+
+diffs = coefs["pure_shock"] - coefs["ffr_shock"]
+
+hist, edges = np.histogram(diffs, density=True, bins="auto")
+
+nparam_density = stats.kde.gaussian_kde(diffs)
+x = np.linspace(edges.min(), edges.max(), 1000)
+nparam_density = nparam_density(x)
+
+chart = make_hist("Distribution of delta - beta", hist, edges, nparam_density, x)
+show(chart)
+
+#%%
+# gk1 = pd.read_csv("data/gk_data/factor_data.csv",index_col=0)
+# gk2 = loadmat("data/gk_data/DATASET.mat")
+# ffr_shock = pd.read_excel("data/NS.xlsx", sheet_name="shocks", index_col=0)
+print(gk2)
+#%%
 
 
 def set_up(x, y, truncated=True, margins=None):
@@ -363,28 +439,32 @@ show(p)
 # Prepare results for paper
 from stargazer.stargazer import Stargazer
 
-pretty_df = df.rename({
-    "ffr_shock": """\(FS_m\)""",
-    "pure_shock": """\(\hat{\epsilon}_m\)""",
-    "stock_returns": "Stock Returns"
-    }, axis = 1) *100
-pretty_df.describe().to_latex("2nd_stage_summary_stats.tex", 
-                              float_format="%.4f",
-                              caption ="""Summary statistics for our final dataset. Note that all variables are reported as percentages.""",
-                              label = "SumStats",
-                              escape = False)
-
-stage3_1_mod = smf.ols("stock_returns ~ ffr_shock",
-    data=df,
+pretty_df = (
+    df.rename(
+        {
+            "ffr_shock": """\(FS_m\)""",
+            "pure_shock": """\(\hat{\epsilon}_m\)""",
+            "stock_returns": "Stock Returns",
+        },
+        axis=1,
+    )
+    * 100
+)
+pretty_df.describe().to_latex(
+    "2nd_stage_summary_stats.tex",
+    float_format="%.4f",
+    caption="""Summary statistics for our final dataset. Note that all variables are reported as percentages.""",
+    label="SumStats",
+    escape=False,
 )
 
-stage3_2_mod = smf.ols("stock_returns ~ pure_shock",
-    data=df,
-)
+stage3_1_mod = smf.ols("stock_returns ~ ffr_shock", data=df,)
+
+stage3_2_mod = smf.ols("stock_returns ~ pure_shock", data=df,)
 print(Stargazer([stage3_1_mod.fit(), stage3_2_mod.fit()]).render_latex())
 
-H = ( -7.154 + 6.518)**2/(2.919**2- 2.601**2)
-1-stats.chi2.cdf(H, 1)
+H = (-7.154 + 6.518) ** 2 / (2.919 ** 2 - 2.601 ** 2)
+1 - stats.chi2.cdf(H, 1)
 #%%
 # Hypthesis Testing
 
