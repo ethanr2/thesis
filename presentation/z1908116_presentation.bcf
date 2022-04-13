@@ -93,7 +93,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>3</bcf:value>
+      <bcf:value>2</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
@@ -333,7 +333,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>3</bcf:value>
+      <bcf:value>2</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
@@ -553,7 +553,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>3</bcf:value>
+      <bcf:value>2</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
@@ -2837,6 +2837,57 @@
     <bcf:citekey order="44">Nakamura2018</bcf:citekey>
     <bcf:citekey order="45">Bauer2020</bcf:citekey>
     <bcf:citekey order="46">Bauer2020</bcf:citekey>
+    <bcf:citekey order="47">Gurkaynak2011</bcf:citekey>
+    <bcf:citekey order="48">Gertler2015</bcf:citekey>
+    <bcf:citekey order="49">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="50">Gurkaynak2011</bcf:citekey>
+    <bcf:citekey order="51">Gertler2015</bcf:citekey>
+    <bcf:citekey order="52">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="53">Gurkaynak2011</bcf:citekey>
+    <bcf:citekey order="54">Gertler2015</bcf:citekey>
+    <bcf:citekey order="55">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="56">Gurkaynak2011</bcf:citekey>
+    <bcf:citekey order="57">Gertler2015</bcf:citekey>
+    <bcf:citekey order="58">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="59">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="60">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="61">Romer2004</bcf:citekey>
+    <bcf:citekey order="62">Romer2004</bcf:citekey>
+    <bcf:citekey order="63">Bauer2020</bcf:citekey>
+    <bcf:citekey order="64">Bauer2020</bcf:citekey>
+    <bcf:citekey order="65">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="66">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="67">Romer2004</bcf:citekey>
+    <bcf:citekey order="68">Romer2004</bcf:citekey>
+    <bcf:citekey order="69">Bauer2020</bcf:citekey>
+    <bcf:citekey order="70">Bauer2020</bcf:citekey>
+    <bcf:citekey order="71">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="72">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="73">Romer2004</bcf:citekey>
+    <bcf:citekey order="74">Romer2004</bcf:citekey>
+    <bcf:citekey order="75">Bauer2020</bcf:citekey>
+    <bcf:citekey order="76">Bauer2020</bcf:citekey>
+    <bcf:citekey order="77">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="78">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="79">Romer2004</bcf:citekey>
+    <bcf:citekey order="80">Romer2004</bcf:citekey>
+    <bcf:citekey order="81">Bauer2020</bcf:citekey>
+    <bcf:citekey order="82">Bauer2020</bcf:citekey>
+    <bcf:citekey order="83">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="84">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="85">Romer2004</bcf:citekey>
+    <bcf:citekey order="86">Romer2004</bcf:citekey>
+    <bcf:citekey order="87">Bauer2020</bcf:citekey>
+    <bcf:citekey order="88">Bauer2020</bcf:citekey>
+    <bcf:citekey order="89">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="90">Nakamura2018</bcf:citekey>
+    <bcf:citekey order="91">Romer2004</bcf:citekey>
+    <bcf:citekey order="92">Romer2004</bcf:citekey>
+    <bcf:citekey order="93">Bauer2020</bcf:citekey>
+    <bcf:citekey order="94">Bauer2020</bcf:citekey>
+    <bcf:citekey order="95">Bauer2020</bcf:citekey>
+    <bcf:citekey order="96">Bauer2020</bcf:citekey>
+    <bcf:citekey order="97">Bauer2020</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">

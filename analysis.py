@@ -18,7 +18,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 
-TRUNC = (dt(2000, 1, 1), dt(2015, 1, 1))
+TRUNC = (dt(1994, 2, 1), dt(2015, 1, 1))
 COLS = {
     "gRGDP": ("gRGDPB2", "gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2", "gRGDPF3"),
     "gPGDP": ("gPGDPB2", "gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2", "gPGDPF3"),
@@ -174,7 +174,10 @@ def calc_diffs(raw_data):
 def get_data(source="data/NS.xlsx"):
     gb_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
     # Reminder to switch to GK data later.
-    ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
+    # ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
+    ffr_shock = pd.read_csv(
+        "data/gk_data/mps_updated.csv", index_col=0, parse_dates=True
+    )
     raw_data = align_dates(gb_data, ffr_shock)
     diffs = calc_diffs(raw_data)
     data = (
@@ -183,12 +186,14 @@ def get_data(source="data/NS.xlsx"):
         )
         # .dropna()
     )
+
     return data.rename(ROMER_REP_DICT, axis=1)
 
 
 def construct_indicator(data, resample=False):
-    if resample:
-        data = data.sample(frac=resample)
+    data = data.copy()
+    # if resample:
+    #     data = data.sample(frac=resample)
     model = smf.ols(
         (
             "ffr_shock ~ "
@@ -204,6 +209,7 @@ def construct_indicator(data, resample=False):
     res = model.fit()
     if not resample:
         print(res.summary())
+
     data["pure_shock"] = res.resid / 100
     data["ffr_shock"] = data["ffr_shock"] / 100
 
@@ -212,7 +218,8 @@ def construct_indicator(data, resample=False):
     data["stock_returns"] = np.log(stock_df.loc[data.index, "Close"]) - np.log(
         stock_df.loc[data.index, "Open"]
     )
-    return data.loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
+    return data
+
 
 # Bootstrap
 def regressions(sample):
@@ -225,247 +232,34 @@ def regressions(sample):
 
 
 def bootstrap(N, frac):
+    size = int(len(raw_data) * frac)
+    sample_ind = [
+        np.random.choice(raw_data.index, size=size, replace=False) for i in range(N)
+    ]
     samples = []
     print("Preparing Samples.")
     t0 = time()
     for i in range(N):
-        samples.append(construct_indicator(data, frac))
+        samples.append(construct_indicator(raw_data.loc[sample_ind[i], :], True))
         print(i, round(time() - t0, 2))
 
     samples = pd.Series(samples)
     coefs = samples.apply(regressions)
     return coefs
 
-data = get_data()
-full_sample = construct_indicator(data)
-full_sample.to_pickle("data/processed_data/full_sample.pkl")
-#%%
+
+# filtered data: .loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
+raw_data = get_data()
+full_sample = construct_indicator(raw_data)
+full_sample.to_pickle("data/processed_data/full_sample_gk_data.pkl")
+
 coefs = bootstrap(10000, 0.80)
+coefs.to_pickle("data/processed_data/bootstrap_gk_data.pkl")
+
 #%%
-from bokeh.io import export_png, output_file, show
-from bokeh.plotting import figure
-from bokeh.models import NumeralTickFormatter, LabelSet, ColumnDataSource
-from bokeh.models.tickers import FixedTicker
-from bokeh.layouts import row, column
-
-NIUred = (200, 16, 46)
-NIUpantone = (165, 167, 168)
-
-
-def make_hist(title, hist, edges, pdf, x):
-    p = figure(title=title, tools="", background_fill_color="white")
-    p.quad(
-        top=hist,
-        bottom=0,
-        left=edges[:-1],
-        right=edges[1:],
-        fill_color=NIUred,
-        line_color=NIUred,
-        alpha=1,
-    )
-    p.line(x, pdf, line_color=NIUpantone, line_width=4, alpha=0.7, legend_label="PDF")
-    # p.line(x, cdf, line_color="orange", line_width=2, alpha=0.7, legend_label="CDF")
-    p.line([0, 0], [0, hist.max()], color="black", line_width=2)
-    p.y_range.start = 0
-    p.legend.location = "center_right"
-    p.legend.background_fill_color = "#fefefe"
-    p.xaxis.axis_label = "x"
-    p.yaxis.axis_label = "Density"
-    p.grid.grid_line_color = "white"
-    return p
-
-
-diffs = coefs["pure_shock"] - coefs["ffr_shock"]
-
-hist, edges = np.histogram(diffs, density=True, bins="auto")
-
-nparam_density = stats.kde.gaussian_kde(diffs)
-x = np.linspace(edges.min(), edges.max(), 1000)
-nparam_density = nparam_density(x)
-
-chart = make_hist("Distribution of delta - beta", hist, edges, nparam_density, x)
-show(chart)
-
 #%%
 # gk1 = pd.read_csv("data/gk_data/factor_data.csv",index_col=0)
 # gk2 = loadmat("data/gk_data/DATASET.mat")
 # ffr_shock = pd.read_excel("data/NS.xlsx", sheet_name="shocks", index_col=0)
-print(gk2)
+# print(gk2)
 #%%
-
-
-def set_up(x, y, truncated=True, margins=None):
-    if truncated:
-        b = (3 * y.min() - y.max()) / 2
-    else:
-        b = y.min()
-    if margins == None:
-        xrng = (x.min(), x.max())
-        yrng = (b, y.max())
-    else:
-        xrng = (x.min() - margins, x.max() + margins)
-        yrng = (b - margins, y.max() + margins)
-
-    x = x.dropna()
-    y = y.dropna()
-
-    return (x, y, xrng, yrng)
-
-
-# Chart of a regression e.g. inflation vs money supply
-def chart2(df):
-    df = df.dropna()
-    xdata, ydata, xrng, yrng = set_up(
-        df.iloc[:, 0], df.iloc[:, 1], truncated=False, margins=0.005
-    )
-
-    p = figure(
-        width=500,
-        height=500,
-        title="Effect of Monetary Policy on the Stock Market",
-        x_axis_label="Monetary Policy Shock",
-        y_axis_label="Log Change in S&P500 Price",
-        y_range=yrng,
-        x_range=xrng,
-    )
-    p.line(xrng, [0, 0], color="black")
-    p.line([0, 0], yrng, color="black")
-
-    slope, intercept, r_value, p_value, std_err = stats.linregress(xdata, ydata)
-    leg = "R = {:.4f}, Slope = {:.4f}".format(r_value, slope)
-    p.line(xdata, xdata * slope + intercept, legend_label=leg, color="black")
-    p.circle(xdata, ydata, color="blue", size=2)
-
-    p.xaxis[0].ticker.desired_num_ticks = 10
-    p.xgrid.grid_line_color = None
-    p.ygrid.grid_line_color = None
-    p.xaxis.formatter = NumeralTickFormatter(format="0.0%")
-    p.yaxis.formatter = NumeralTickFormatter(format="0.0%")
-    p.legend.location = "bottom_right"
-
-    export_png(p, filename="imgs/chart2.png")
-
-    return p
-
-
-def chart1(df, series, title, name, leg):
-    xdata, ydata, xrng, yrng = set_up(df.index, df[series], truncated=False)
-    scale = 1
-    p = figure(
-        width=int(1000 * scale),
-        height=int(666 * scale),
-        title=title,
-        x_axis_label="Date",
-        x_axis_type="datetime",
-        y_range=yrng,
-        x_range=xrng,
-        # toolbar_location=None,
-    )
-    p.line(xrng, [0, 0], color="black", width=1)
-
-    p.line(xdata, ydata, color=NIUred, width=2, legend_label=leg)
-
-    # p.xaxis[0].ticker.desired_num_ticks = 10
-    # p.legend.location = "bottom_right"
-    p.xgrid.grid_line_color = None
-    p.ygrid.grid_line_color = None
-    p.yaxis.formatter = NumeralTickFormatter(format="0.00%")
-    # p.xaxis.major_label_orientation = math.pi/4
-    p.title.text_font_size = "16pt"
-    p.xaxis.axis_label_text_font_size = "14pt"
-    p.yaxis.axis_label_text_font_size = "14pt"
-    # p.legend.label_text_font_size = "14pt"
-    export_png(p, filename=name)
-
-    return p
-
-
-plot = chart1(
-    data,
-    "pure_shock",
-    "Monetary Policy Shock Indicators",
-    "new_indicator.png",
-    leg="Purified Shock",
-)
-plot.line(
-    data["ffr_shock"].index,
-    data["ffr_shock"],
-    color=NIUpantone,
-    width=2,
-    legend_label="Baseline FFR Futures Shock",
-)
-show(plot)
-
-
-# Plot the effect of our indicators on the stock market
-df = data.loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
-NIUred = (200, 16, 46)
-NIUpantone = (165, 167, 168)
-
-xdata, ydata, xrng, yrng = set_up(df["ffr_shock"], df["stock_returns"], truncated=False)
-p = figure(
-    width=600,
-    height=600,
-    title="Effect of Monetary Policy on the Stock Market",
-    x_axis_label="Monetary Policy Shock",
-    y_axis_label="Log Change in S&P500 Price",
-    y_range=yrng,
-    x_range=xrng,
-)
-p.line(xrng, [0, 0], color="black")
-p.line([0, 0], yrng, color="black")
-
-
-def add_reg_line(p, xdata, ydata, color, leg_title=""):
-    slope, intercept, r_value, p_value, std_err = stats.linregress(xdata, ydata)
-    leg = "R = {:.4f}, Slope = {:.4f}".format(r_value, slope)
-    p.line(xdata, xdata * slope + intercept, legend_label=leg_title + leg, color=color)
-    p.circle(xdata, ydata, color=color, size=2)
-
-
-add_reg_line(p, xdata, ydata, NIUred, "Futures Shock: ")
-add_reg_line(p, df["pure_shock"], ydata, NIUpantone, "Purified Shock: ")
-
-p.xaxis[0].ticker.desired_num_ticks = 10
-p.xgrid.grid_line_color = None
-p.ygrid.grid_line_color = None
-p.xaxis.formatter = NumeralTickFormatter(format="0.0%")
-p.yaxis.formatter = NumeralTickFormatter(format="0.0%")
-p.legend.location = "bottom_right"
-
-show(p)
-
-#%%
-# Prepare results for paper
-from stargazer.stargazer import Stargazer
-
-pretty_df = (
-    df.rename(
-        {
-            "ffr_shock": """\(FS_m\)""",
-            "pure_shock": """\(\hat{\epsilon}_m\)""",
-            "stock_returns": "Stock Returns",
-        },
-        axis=1,
-    )
-    * 100
-)
-pretty_df.describe().to_latex(
-    "2nd_stage_summary_stats.tex",
-    float_format="%.4f",
-    caption="""Summary statistics for our final dataset. Note that all variables are reported as percentages.""",
-    label="SumStats",
-    escape=False,
-)
-
-stage3_1_mod = smf.ols("stock_returns ~ ffr_shock", data=df,)
-
-stage3_2_mod = smf.ols("stock_returns ~ pure_shock", data=df,)
-print(Stargazer([stage3_1_mod.fit(), stage3_2_mod.fit()]).render_latex())
-
-H = (-7.154 + 6.518) ** 2 / (2.919 ** 2 - 2.601 ** 2)
-1 - stats.chi2.cdf(H, 1)
-#%%
-# Hypthesis Testing
-
-# Bootstrap this mfer

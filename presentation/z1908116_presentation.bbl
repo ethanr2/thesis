@@ -1,0 +1,287 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\preamble{%
+\DeclareRobustCommand{\firstsecond}[2]{#2}%
+}
+
+
+\refsection{0}
+  \datalist[entry]{apa/global//global/global}
+    \entry{Bauer2020}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=e3aaf99037fdbf7a9ce99497cd543989}{%
+           family={Bauer},
+           familyi={B\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1ff0d64a3f4ed2fa95aa6e29f5c3de95}{%
+           family={Swanson},
+           familyi={S\bibinitperiod},
+           given={Eric\bibnamedelima T.},
+           giveni={E\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6486ed65b804c154f52f4aea87569109}
+      \strng{fullhash}{6486ed65b804c154f52f4aea87569109}
+      \strng{bibnamehash}{6486ed65b804c154f52f4aea87569109}
+      \strng{authorbibnamehash}{6486ed65b804c154f52f4aea87569109}
+      \strng{authornamehash}{6486ed65b804c154f52f4aea87569109}
+      \strng{authorfullhash}{6486ed65b804c154f52f4aea87569109}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{High-frequency changes in interest rates around FOMC announcements are a standard method of measuring monetary policy shocks. However, some recent studies have documented puzzling eﬀects of these shocks on private-sector forecasts of GDP, unemployment, or inﬂation that are opposite in sign to what standard macroeconomic models would predict. This evidence has been viewed as supportive of a “Fed information effect” channel of monetary policy, whereby an FOMC tightening (easing) communicates that the economy is stronger (weaker) than the public had expected. We show that these empirical results are also consistent with a “Fed response to news” channel, in which incoming, publicly available economic news causes both the Fed to change monetary policy and the private sector to revise its forecasts. We provide substantial new evidence that distinguishes between these two channels and strongly favors the latter; for example, (i) high-frequency stock market responses to Fed announcements, (ii) a new survey that we conduct of individual Blue Chip forecasters, and (iii) regressions that include the previously omitted public macroeconomic data releases all indicate that the Fed and Blue Chip forecasters are simply responding to the same public news, and that there is little if any role for a “Fed information eﬀect”.}
+      \field{journaltitle}{Federal Reserve Bank of San Francisco, Working Paper Series}
+      \field{title}{{The Fed's Response to Economic News Explains the “Fed Information Effect”}}
+      \field{year}{2020}
+      \field{pages}{01\bibrangedash 62}
+      \range{pages}{62}
+      \verb{doi}
+      \verb 10.24148/wp2020-06
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/ethan/projects/ResearchRookies/papers/bauer{\_}swanson{\_}2020.pdf:pdf
+      \endverb
+    \endentry
+    \entry{bogFFER}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3cd2bc76777b6930ba38f494b40da914}{%
+           family={{Board of Governors of the Federal Reserve System}},
+           familyi={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{3cd2bc76777b6930ba38f494b40da914}
+      \strng{fullhash}{3cd2bc76777b6930ba38f494b40da914}
+      \strng{bibnamehash}{3cd2bc76777b6930ba38f494b40da914}
+      \strng{authorbibnamehash}{3cd2bc76777b6930ba38f494b40da914}
+      \strng{authornamehash}{3cd2bc76777b6930ba38f494b40da914}
+      \strng{authorfullhash}{3cd2bc76777b6930ba38f494b40da914}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DFF}
+      \field{title}{Federal Funds Effective Rate}
+      \field{year}{2022}
+    \endentry
+    \entry{Gertler2015}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=732a7645c3f5314d26682b07972f06a2}{%
+           family={Gertler},
+           familyi={G\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=75f6d47bff4a3d2b5ce170696229ff4c}{%
+           family={Karadi},
+           familyi={K\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{adbf98ee88d39e2a5cc0cf895a952f4f}
+      \strng{fullhash}{adbf98ee88d39e2a5cc0cf895a952f4f}
+      \strng{bibnamehash}{adbf98ee88d39e2a5cc0cf895a952f4f}
+      \strng{authorbibnamehash}{adbf98ee88d39e2a5cc0cf895a952f4f}
+      \strng{authornamehash}{adbf98ee88d39e2a5cc0cf895a952f4f}
+      \strng{authorfullhash}{adbf98ee88d39e2a5cc0cf895a952f4f}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We provide evidence on the transmission of monetary policy shocks in a setting with both economic and financial variables. We first show that shocks identified using high frequency surprises around policy announcements as external instruments produce responses in output and inflation that are typical in monetary VAR analysis. We also find, however, that the resulting " modest" movements in short rates lead to " large" movements in credit costs, which are due mainly to the reaction of both term premia and credit spreads. Finally, we show that forward guidance is important to the overall strength of policy transmission.}
+      \field{issn}{19457715}
+      \field{journaltitle}{American Economic Journal: Macroeconomics}
+      \field{number}{1}
+      \field{title}{{Monetary policy surprises, credit costs, and economic activity}}
+      \field{volume}{7}
+      \field{year}{2015}
+      \verb{doi}
+      \verb 10.1257/mac.20130329
+      \endverb
+    \endentry
+    \entry{Gurkaynak2011}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=7c1423a702a8df18727f2a8567946e76}{%
+           family={Gurkaynak},
+           familyi={G\bibinitperiod},
+           given={Refet\bibnamedelima S.},
+           giveni={R\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2fa360b7c77a4165a45e19ae82069b7f}{%
+           family={Sack},
+           familyi={S\bibinitperiod},
+           given={Brian\bibnamedelima P.},
+           giveni={B\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1ff0d64a3f4ed2fa95aa6e29f5c3de95}{%
+           family={Swanson},
+           familyi={S\bibinitperiod},
+           given={Eric\bibnamedelima T.},
+           giveni={E\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{53780ed963dd0d231b5f4502f1f6ae3a}
+      \strng{fullhash}{53780ed963dd0d231b5f4502f1f6ae3a}
+      \strng{bibnamehash}{53780ed963dd0d231b5f4502f1f6ae3a}
+      \strng{authorbibnamehash}{53780ed963dd0d231b5f4502f1f6ae3a}
+      \strng{authornamehash}{53780ed963dd0d231b5f4502f1f6ae3a}
+      \strng{authorfullhash}{53780ed963dd0d231b5f4502f1f6ae3a}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We investigate the effects of U.S. monetary policy on asset prices using a high-frequency event-study analysis. We test whether these effects are adequately captured by a single factor - changes in the federal funds rate target - and find that they are not. Instead, we find that two factors are required. These factors have a structural interpretation as a current federal funds rate target factor and a future path of policy factor, with the latter closely associated with FOMC statements. We measure the effects of these two factors on bond yields and stock prices using a new intraday dataset going back to 1990. According to our estimates, both monetary policy actions and statements have important but differing effects on asset prices, with statements having a much greater impact on longer-term Treasury yields.}
+      \field{issn}{1815-4654}
+      \field{journaltitle}{SSRN Electronic Journal}
+      \field{title}{{Do Actions Speak Louder Than Words? The Response of Asset Prices to Monetary Policy Actions and Statements}}
+      \field{year}{2011}
+      \verb{doi}
+      \verb 10.2139/ssrn.633281
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/ethan/projects/ResearchRookies/papers/200466pap.pdf:pdf
+      \endverb
+    \endentry
+    \entry{Nakamura2018}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=ef80022dca97c9339f14429d0aa7eb82}{%
+           family={Nakamura},
+           familyi={N\bibinitperiod},
+           given={Emi},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7fc943bb8bcc8390269e9da3fedc0db1}{%
+           family={Steinsson},
+           familyi={S\bibinitperiod},
+           given={Jón},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c6d294fcbe279521e3541981060c2229}
+      \strng{fullhash}{c6d294fcbe279521e3541981060c2229}
+      \strng{bibnamehash}{c6d294fcbe279521e3541981060c2229}
+      \strng{authorbibnamehash}{c6d294fcbe279521e3541981060c2229}
+      \strng{authornamehash}{c6d294fcbe279521e3541981060c2229}
+      \strng{authorfullhash}{c6d294fcbe279521e3541981060c2229}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We present estimates of monetary non-neutrality based on evidence from highfrequency responses of real interest rates, expected inflation, and expected output growth. Our identifying assumption is that unexpected changes in interest rates in a 30-minute window surrounding scheduled Federal Reserve announcements arise from news about monetary policy. In response to an interest rate hike, nominal and real interest rates increase roughly one-for-one, several years out into the term structure, while the response of expected inflation is small. At the same time, forecasts about output growth also increase-the opposite of what standard models imply about a monetary tightening. To explain these facts, we build a model in which Fed announcements affect beliefs not only about monetary policy but also about other economic fundamentals. Our model implies that these information effects play an important role in the overall causal effect of monetary policy shocks on output.}
+      \field{issn}{15314650}
+      \field{journaltitle}{Quarterly Journal of Economics}
+      \field{number}{3}
+      \field{title}{{High-frequency identification of monetary non-neutrality: The information effect}}
+      \field{volume}{133}
+      \field{year}{2018}
+      \verb{doi}
+      \verb 10.1093/QJE/QJY004
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/ethan/projects/ResearchRookies/papers/nakamura.pdf:pdf
+      \endverb
+    \endentry
+    \entry{Romer2004}{article}{}
+      \name{author}{2}{}{%
+        {{un=1,uniquepart=given,hash=9647e38c0677f1047fd2d726ef323e55}{%
+           family={Romer},
+           familyi={R\bibinitperiod},
+           given={Christina\bibnamedelima D},
+           giveni={C\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=1}}%
+        {{un=1,uniquepart=given,hash=c33e264a77812518e81754d198493aef}{%
+           family={Romer},
+           familyi={R\bibinitperiod},
+           given={David\bibnamedelima H},
+           giveni={D\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=1}}%
+      }
+      \strng{namehash}{015867a7c8d14b89326cbfc24095f9f5}
+      \strng{fullhash}{015867a7c8d14b89326cbfc24095f9f5}
+      \strng{bibnamehash}{015867a7c8d14b89326cbfc24095f9f5}
+      \strng{authorbibnamehash}{015867a7c8d14b89326cbfc24095f9f5}
+      \strng{authornamehash}{015867a7c8d14b89326cbfc24095f9f5}
+      \strng{authorfullhash}{015867a7c8d14b89326cbfc24095f9f5}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper develops a measure of U.S. monetary policy shocks for the period 1969–1996 that is relatively free of endogenous and anticipatory movements. Quantitative and narrative records are used to infer the Federal Reserve's intentions for the federal funds rate around FOMC meetings. This series is regressed on the Federal Reserve's internal forecasts to derive a measure free of systematic responses to information about future developments. Estimates using the new measure indicate that policy has large, relatively rapid, and statistically significant effects on both output and inflation. The effects are substantially stronger and quicker than those obtained using conventional indicators.}
+      \field{issn}{0002-8282}
+      \field{journaltitle}{American Economic Review}
+      \field{number}{4}
+      \field{title}{{A New Measure of Monetary Shocks: Derivation and Implications}}
+      \field{volume}{94}
+      \field{year}{2004}
+      \field{pages}{1055\bibrangedash 1084}
+      \range{pages}{30}
+      \verb{doi}
+      \verb 10.1257/0002828042002651
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/ethan/projects/FFR{\_}rate{\_}changes/papers/romer{\&}romer04.pdf:pdf
+      \endverb
+    \endentry
+    \entry{beaRGDP}{misc}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=eade398080989d2c57555e416912ba7f}{%
+           family={{U.S. Bureau of Economic Analysis}},
+           familyi={U\bibinitperiod}}}%
+      }
+      \strng{namehash}{eade398080989d2c57555e416912ba7f}
+      \strng{fullhash}{eade398080989d2c57555e416912ba7f}
+      \strng{bibnamehash}{eade398080989d2c57555e416912ba7f}
+      \strng{authorbibnamehash}{eade398080989d2c57555e416912ba7f}
+      \strng{authornamehash}{eade398080989d2c57555e416912ba7f}
+      \strng{authorfullhash}{eade398080989d2c57555e416912ba7f}
+      \field{sortinit}{U}
+      \field{sortinithash}{6901a00e45705986ee5e7ca9fd39adca}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/GDPC1}
+      \field{title}{Real Gross Domestic Product}
+      \field{year}{2022}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
