@@ -19,7 +19,7 @@ import statsmodels.formula.api as smf
 
 from bokeh.io import export_png, output_file, show
 from bokeh.plotting import figure
-from bokeh.models import NumeralTickFormatter, LabelSet, ColumnDataSource
+from bokeh.models import NumeralTickFormatter, LabelSet, ColumnDataSource, Label
 from bokeh.models.tickers import FixedTicker
 from bokeh.layouts import row, column
 
@@ -27,47 +27,11 @@ NIUred = (200, 16, 46)
 NIUpantone = (165, 167, 168)
 
 full_sample = pd.read_pickle("data/processed_data/full_sample.pkl")
-coefs2 = pd.read_pickle("data/processed_data/bootstrap_gk_data.pkl")
-coefs2
+coefs = pd.read_pickle("data/processed_data/bootstrap.pkl")
+coefs
 #%%
-def make_hist(title, hist, edges, pdf, x):
-    p = figure(title=title, tools="", background_fill_color="white")
-    p.quad(
-        top=hist,
-        bottom=0,
-        left=edges[:-1],
-        right=edges[1:],
-        fill_color=NIUred,
-        line_color=NIUred,
-        alpha=1,
-    )
-    p.line(x, pdf, line_color=NIUpantone, line_width=6, alpha=0.90, legend_label="PDF")
-    # p.line(x, cdf, line_color="orange", line_width=2, alpha=0.7, legend_label="CDF")
-    p.line([0, 0], [0, hist.max()], color="black", line_width=2)
-    p.y_range.start = 0
-    p.legend.location = "center_right"
-    p.legend.background_fill_color = "#fefefe"
-    p.xaxis.axis_label = "δ-β"
-    p.yaxis.axis_label = "Density"
-    p.grid.grid_line_color = "white"
-    p.title.text_font_size = "16pt"
-    p.xaxis.axis_label_text_font_size = "14pt"
-    p.yaxis.axis_label_text_font_size = "14pt"
-    p.legend.label_text_font_size = "14pt"
-    export_png(p, filename="presentation/charts/bootstrap2.png")
-    return p
 
 
-diffs = coefs2["pure_shock"] - coefs2["ffr_shock"]
-
-hist, edges = np.histogram(diffs, density=True, bins="auto")
-
-nparam_density = stats.kde.gaussian_kde(diffs)
-x = np.linspace(edges.min(), edges.max(), 1000)
-nparam_density = nparam_density(x)
-
-chart = make_hist("Bootstrapped Distribution of δ - β", hist, edges, nparam_density, x)
-show(chart)
 #%%
 
 #%%
@@ -167,6 +131,89 @@ def base_line_pure_shock_timeseries(df, series, title, name, leg):
     return p
 
 
+def reg_chart(data):
+    xdata, ydata, xrng, yrng = set_up(
+        data["ffr_shock"], data["stock_returns"], truncated=False
+    )
+    p = figure(
+        width=700,
+        height=500,
+        title="Effect of Monetary Policy on the Stock Market",
+        x_axis_label="Monetary Policy Shock",
+        y_axis_label="Log Change in S&P500",
+        y_range=yrng,
+        x_range=xrng,
+        toolbar_location=None,
+    )
+    p.line(xrng, [0, 0], color="black", width=3)
+    p.line([0, 0], yrng, color="black", width=3)
+
+    def add_reg_line(p, xdata, ydata, color, leg_title=""):
+        slope, intercept, r_value, p_value, std_err = stats.linregress(xdata, ydata)
+        leg = "R = {:.4f}, Slope = {:.4f}".format(r_value, slope)
+        p.line(
+            xdata,
+            xdata * slope + intercept,
+            legend_label=leg_title + leg,
+            color=color,
+            width=4,
+        )
+        p.circle(xdata, ydata, color=color, size=5)
+
+    add_reg_line(p, xdata, ydata, NIUred, "Futures Shock: ")
+    add_reg_line(p, data["pure_shock"], ydata, NIUpantone, "Purified Shock: ")
+
+    p.xaxis[0].ticker.desired_num_ticks = 10
+    p.xgrid.grid_line_color = None
+    p.ygrid.grid_line_color = None
+    p.xaxis.formatter = NumeralTickFormatter(format="0.00%")
+    p.yaxis.formatter = NumeralTickFormatter(format="0.0%")
+    p.title.text_font_size = "16pt"
+    p.xaxis.axis_label_text_font_size = "14pt"
+    p.yaxis.axis_label_text_font_size = "14pt"
+    p.legend.label_text_font_size = "14pt"
+
+    export_png(p, filename="presentation/charts/reg_chart.png")
+    return p
+
+
+def make_hist(title, hist, edges, pdf, x):
+    p = figure(
+        title=title,
+        width=700,
+        height=500,
+        toolbar_location=None,
+        background_fill_color="white",
+    )
+    p.quad(
+        top=hist,
+        bottom=0,
+        left=edges[:-1],
+        right=edges[1:],
+        fill_color=NIUred,
+        line_color=NIUred,
+        alpha=1,
+    )
+    p.line(x, pdf, line_color=NIUpantone, line_width=6, alpha=0.90, legend_label="PDF")
+    # p.line(x, cdf, line_color="orange", line_width=2, alpha=0.7, legend_label="CDF")
+    p.line([0, 0], [0, hist.max()], color="black", line_width=2)
+    p.y_range.start = 0
+    p.y_range.end = hist.max()
+    p.x_range.start = x.min()
+    p.x_range.end = x.max()
+    p.legend.location = "center_right"
+    p.legend.background_fill_color = "#fefefe"
+    p.xaxis.axis_label = "δ-β"
+    p.yaxis.axis_label = "Density"
+    p.grid.grid_line_color = "white"
+    p.title.text_font_size = "16pt"
+    p.xaxis.axis_label_text_font_size = "14pt"
+    p.yaxis.axis_label_text_font_size = "14pt"
+    p.legend.label_text_font_size = "14pt"
+
+    return p
+
+
 df = (
     pd.read_csv("data/fredgraph.csv", na_values=".", index_col="DATE", parse_dates=True)
     .dropna()
@@ -193,7 +240,29 @@ p2.line(
     legend_label="Baseline FFR Futures Shock",
 )
 export_png(p2, filename="presentation/charts/pure_indicator.png")
-show(column(p1, p2))
+
+p3 = reg_chart(data)
+
+diffs = coefs["pure_shock"] - coefs["ffr_shock"]
+hist, edges = np.histogram(diffs, density=True, bins="auto")
+nparam_density = stats.kde.gaussian_kde(diffs)
+x = np.linspace(edges.min(), edges.max(), 1000)
+nparam_density = nparam_density(x)
+p4 = make_hist("Bootstrapped Distribution of δ - β", hist, edges, nparam_density, x)
+p_val = sum(coefs["pure_shock"] - coefs["ffr_shock"] > 0) / len(coefs)
+print(p_val)
+p_label = Label(
+    x=1.0, y=0.15, text="P(δ - β≥0)={:.1f}%".format(p_val * 100), text_font_size="14pt"
+)
+p4.add_layout(p_label)
+export_png(p4, filename="presentation/charts/bootstrap.png")
+
+show(column(p1, p2, p3, p4))
+
+H = (-7.154 + 6.518) ** 2 / (2.919 ** 2 - 2.601 ** 2)
+1 - stats.chi2.cdf(H, 1)
+#%%
+
 #%%
 # df1 = (
 #     pd.read_csv(
@@ -253,39 +322,5 @@ def chart2(df):
 #%%
 
 # Plot the effect of our indicators on the stock market
-df = data.loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
 NIUred = (200, 16, 46)
 NIUpantone = (165, 167, 168)
-
-xdata, ydata, xrng, yrng = set_up(df["ffr_shock"], df["stock_returns"], truncated=False)
-p = figure(
-    width=600,
-    height=600,
-    title="Effect of Monetary Policy on the Stock Market",
-    x_axis_label="Monetary Policy Shock",
-    y_axis_label="Log Change in S&P500 Price",
-    y_range=yrng,
-    x_range=xrng,
-)
-p.line(xrng, [0, 0], color="black")
-p.line([0, 0], yrng, color="black")
-
-
-def add_reg_line(p, xdata, ydata, color, leg_title=""):
-    slope, intercept, r_value, p_value, std_err = stats.linregress(xdata, ydata)
-    leg = "R = {:.4f}, Slope = {:.4f}".format(r_value, slope)
-    p.line(xdata, xdata * slope + intercept, legend_label=leg_title + leg, color=color)
-    p.circle(xdata, ydata, color=color, size=2)
-
-
-add_reg_line(p, xdata, ydata, NIUred, "Futures Shock: ")
-add_reg_line(p, df["pure_shock"], ydata, NIUpantone, "Purified Shock: ")
-
-p.xaxis[0].ticker.desired_num_ticks = 10
-p.xgrid.grid_line_color = None
-p.ygrid.grid_line_color = None
-p.xaxis.formatter = NumeralTickFormatter(format="0.0%")
-p.yaxis.formatter = NumeralTickFormatter(format="0.0%")
-p.legend.location = "bottom_right"
-
-show(p)

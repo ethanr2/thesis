@@ -103,22 +103,22 @@
 	\end{frame}
 	\begin{frame}{Related Literature}
 		\begin{itemize}
-			\item \citeauthor{Romer2004} (\citeyear{Romer2004}) 
+			\item \citeauthor{Gertler2015} (\citeyear{Gertler2015}) 
 			\begin{itemize}
-				\item<2-> Federal Reserve's internal "Greenbook forecasts"
-				\item<2-> Regress FFR changes on forecasts
-				\item<2-> Use the residual as indicator
+				\item<2-> FFR Futures contract prices
+				\item<2-> High frequency identification
+				\item<2-> Unexpected rate changes are the indicator
 			\end{itemize}
 			\item<3-> \citeauthor{Nakamura2018} (\citeyear{Nakamura2018})
 			\begin{itemize}
-				\item<4-> FFR Futures contract prices
-				\item<4-> High frequency identification
-				\item<4-> Unexpected rate changes are the indicator
+				\item<4-> Presents "Fed-information effect" 
+				\item<4-> Private sector forecasters revise RGDP projections upwards in response to unexpected rate hikes
+				\item<4-> Implies \citeauthor{Gertler2015} indicator has omitted variable bias
 			\end{itemize}
 			\item<5-> \citeauthor{Bauer2020} (\citeyear{Bauer2020}) 
 			\begin{itemize}
-				\item<6-> Presents "Fed-information effect" 
-				\item<6-> Implies Nakamura indicator has omitted variable bias
+				\item<6-> Criticizes Fed-information effect
+				\item<6-> Proposes "Fed response to news" channel instead
 			\end{itemize}
 		\end{itemize}
 	\end{frame}
@@ -149,7 +149,7 @@
 				y_m &= \beta_0 + \beta_1 \epsilon_m  + v \\
 				y_m &= \beta_0 + \beta_1(FS_m - X_m(\text{FedInfo}_m)^\prime \alpha )  + v \\
 				y_m &= \beta_0 + \beta_1FS_m - \beta_1 X_m(\text{FedInfo}_m)^\prime \alpha + v \\
-				y_m &= \beta_0 + \beta_1FS_m + u \tag{4} \label{eq3} \\ 
+				y_m &= \beta_0 + \beta_1FS_m + u \\ 
 				\mathrm{Cov}(FS_m, u) &\neq 0 
 			\end{align*}
 		\end{itemize}
@@ -164,7 +164,7 @@
 				&+\sum^{2}_{i=0} \phi_i \tilde{\pi}_{mi} + \sum^2_{i=0} \theta_i \left(\tilde{ \pi}_{mi}-\tilde{ \pi}_{m-1,i}\right) + \rho \tilde{u}_{m0} + \epsilon_m
 			\end{align*}
 			\item<5-> Use \(\hat{\epsilon_m}\) as our new indicator
-			\item<6-> For \(y_m\), I follow the methodology of \citeauthor{Bauer2020} (\citeauthor{Bauer2020}) and use the 24 hour change in the log of the S\&P500 stock market index. 
+			\item<6-> For \(y_m\), I follow the methodology of \citeauthor{Bauer2020} (\citeyear{Bauer2020}) and use the 24 hour change in the log of the S\&P500 stock market index. 
 		\end{itemize}
 	\end{frame}
 	\begin{frame}{Data}
@@ -184,15 +184,55 @@
 				\]
 		\end{itemize}
 	\end{frame}
+	\begin{frame}{Empirical Analysis}
+		\begin{figure}
+			\includegraphics[width=.75\textwidth]{charts/reg_chart.png}
+		\end{figure}
+	\end{frame}
 	\begin{frame}{Empirical Analysis: Wu-Hausman Test}
 		\begin{align*}
 			\uncover<2->{H_0: &\delta_1 \text{ and } \beta_1 \text{ are consistent.}} \\
 			\uncover<2->{H_a: &\delta_1 \text{ is consistent but } \beta_1 \text{ is inconsistent.}}
 		\end{align*}
 		\begin{align*}
-			\uncover<3->{\text{Test statistic: } &H = \frac{(\hat{\delta}_1-\hat{\beta}_1^R)^2}{\mathrm{Var}(\hat{\delta}_1)-\mathrm{Var}(\hat{\beta}_1^R)} \sim \chi^2_1} \\
+			\uncover<3->{\text{Test statistic: } &H = \frac{(\hat{\delta}_1-\hat{\beta}_1)^2}{\mathrm{Var}(\hat{\delta}_1)-\mathrm{Var}(\hat{\beta}_1)} \sim \chi^2_1} \\
 			\uncover<4->{&H = \frac{( -7.154+6.518)^2}{2.919^2- 2.601^2} = .2304}
 		\end{align*}
+		\uncover<5->{\(P(H \geq .2304) = 63.1\% \), implying that the Fed-information effect is statistically insignificant.}
+	\end{frame}
+	\begin{frame}{Empirical Analysis: Bootstrapping}
+		\begin{align*}
+			\uncover<2->{H_0: &\delta_1 = \beta_1 } \\
+			\uncover<2->{H_a: &\delta_1 < \beta_1 }
+		\end{align*}
+		\uncover<3->{Bootstrap the distribution of \(\delta - \beta\) with 80\% of the sample per draw for 10,000 draws.}
+	\end{frame}
+	\begin{frame}{Empirical Analysis: Bootstrapping}
+		\begin{figure}
+			\includegraphics[width=.75\textwidth]{charts/bootstrap.png}
+		\end{figure}
+	\end{frame}
+	\begin{frame}{Conclusion}
+		\begin{itemize}
+			\item<1-> Explanations
+			\begin{itemize}
+				\item<2-> Private sector forecasts have improved over time
+				\item<3-> Evidence against \citeauthor{Nakamura2018} (\citeyear{Nakamura2018}) and for \citeauthor{Bauer2020} (\citeyear{Bauer2020})
+				\item<4-> \citeauthor{Bauer2020} argued for "Fed-response to news" channel
+			\end{itemize}
+			\item<5-> Areas for improvement
+			\begin{itemize}
+				\item<6-> Stock market data limited to open and closing prices
+				\item<7-> Treatment sizes very small for ZLB periods
+				\item<8-> Could use longer term interest rate futures to account for QE
+				\item<9-> Eurodollar futures could be better
+			\end{itemize}
+			\item<10-> Summary
+			\begin{itemize}
+				\item<11-> Main contribution is a way to measure "how important" the Fed information effect is
+				\item<12-> All tests indicate that the effect is weak or non-existent 
+			\end{itemize}
+		\end{itemize}
 	\end{frame}
 	\begin{frame}{References}
 		\bibbysection

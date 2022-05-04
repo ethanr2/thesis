@@ -256,7 +256,7 @@ full_sample.to_pickle("data/processed_data/full_sample_gk_data.pkl")
 coefs = bootstrap(10000, 0.80)
 coefs.to_pickle("data/processed_data/bootstrap_gk_data.pkl")
 
-#%%
+
 #%%
 # gk1 = pd.read_csv("data/gk_data/factor_data.csv",index_col=0)
 # gk2 = loadmat("data/gk_data/DATASET.mat")

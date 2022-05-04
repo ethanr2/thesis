@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.13)  13 APR 2022 06:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.13)  13 APR 2022 15:33
 entering extended mode
 **./z1908116_presentation.tex
 (z1908116_presentation.tex
@@ -1522,7 +1522,7 @@ thkerncmss.
 ] [25
 
 ]
-<charts/pure_indicator.png, id=263, 1003.75pt x 668.4975pt>
+<charts/pure_indicator.png, id=268, 1003.75pt x 668.4975pt>
 File: charts/pure_indicator.png Graphic file (type png)
 <use charts/pure_indicator.png>
 Package pdftex.def Info: charts/pure_indicator.png  used on input line 174.
@@ -1539,23 +1539,72 @@ Overfull \vbox (0.85806pt too high) detected at line 174
 
 ] [29
 
-] [30
+]
+<charts/reg_chart.png, id=297, 702.625pt x 501.875pt>
+File: charts/reg_chart.png Graphic file (type png)
+<use charts/reg_chart.png>
+Package pdftex.def Info: charts/reg_chart.png  used on input line 191.
+(pdftex.def)             Requested size: 256.72147pt x 183.37813pt.
+ [30
 
-] [31
+ <./charts/reg_chart.png>] [31
 
 ] [32
 
 ] [33
 
+] [34
+
+] [35
+
+] [36
+
+] [37
+
+] [38
+
+]
+<charts/bootstrap.png, id=355, 702.625pt x 501.875pt>
+File: charts/bootstrap.png Graphic file (type png)
+<use charts/bootstrap.png>
+Package pdftex.def Info: charts/bootstrap.png  used on input line 214.
+(pdftex.def)             Requested size: 256.72147pt x 183.37813pt.
+ [39
+
+ <./charts/bootstrap.png>] [40
+
+]
+[41
+
+] [42
+
+] [43
+
+] [44
+
+] [45
+
+] [46
+
+] [47
+
+] [48
+
+] [49
+
+] [50
+
+] [51
+
 ]
 
-Package biblatex Warning: No reference sections found on input line 199.
+Package biblatex Warning: No reference sections found on input line 239.
 
 
-Overfull \vbox (5.68648pt too high) detected at line 199
+Overfull \vbox (5.68648pt too high) detected at line 239
  []
 
-[34
+[52
 
  <C:/Program Files/MiKTeX 2.9/tex/latex/beamer/beamericonarticle.pdf>]
 \tf@nav=\write7
@@ -1576,10 +1625,10 @@ Package logreq Info: Writing requests to 'z1908116_presentation.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34502 strings out of 478893
- 672882 string characters out of 2859193
- 1468940 words of memory out of 3000000
- 51628 multiletter control sequences out of 15000+600000
+ 34594 strings out of 478893
+ 674045 string characters out of 2859193
+ 1469092 words of memory out of 3000000
+ 51683 multiletter control sequences out of 15000+600000
  416456 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,15n,124p,1462b,4823s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1593,9 +1642,9 @@ amsfonts/cm/cmss8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
 cm/cmssi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss
 i8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
 C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on z1908116_presentation.pdf (34 pages, 305633 bytes).
+Output written on z1908116_presentation.pdf (52 pages, 406693 bytes).
 PDF statistics:
- 402 PDF objects out of 1000 (max. 8388607)
- 78 named destinations out of 1000 (max. 500000)
- 109 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 555 PDF objects out of 1000 (max. 8388607)
+ 113 named destinations out of 1000 (max. 500000)
+ 119 words of extra memory for PDF output out of 10000 (max. 10000000)
 
