@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.13)  9 APR 2022 22:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.10) (preloaded format=pdflatex 2021.10.13)  3 MAY 2022 20:34
 entering extended mode
 **./z1908116_research_paper.tex
 (z1908116_research_paper.tex
@@ -408,7 +408,7 @@ File: l3backend-pdftex.def 2021-08-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count297
 \l__pdf_internal_box=\box57
 )
-(z1908116_research_paper.aux)
+(z1908116_research_paper.aux (latex_tables/stage_2_summary_stats.aux))
 \openout1 = `z1908116_research_paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
@@ -573,7 +573,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 7468) has occurred while \output is active []
 
  [9]
-[10] [11] [12]
+[10]
+\openout2 = `latex_tables/stage_2_summary_stats.aux'.
+
+ (latex_tables/stage_2_summary_stats.tex) [11
+
+
+
+] [12]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [13]
@@ -581,28 +588,28 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 AED endfloat: Processing end Figures and Tables [15
 
 ]
-(z1908116_research_paper.aux) ) 
+(z1908116_research_paper.aux (latex_tables/stage_2_summary_stats.aux)) ) 
 Here is how much of TeX's memory you used:
- 8325 strings out of 478893
- 126973 string characters out of 2859193
- 458237 words of memory out of 3000000
- 26032 multiletter control sequences out of 15000+600000
+ 8340 strings out of 478893
+ 127683 string characters out of 2859193
+ 458672 words of memory out of 3000000
+ 26038 multiletter control sequences out of 15000+600000
  443523 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,14n,80p,1253b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/
-lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Pro
-gram Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Program Files/MiKTeX
- 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/
-lm/lm-mathit.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb>
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/public/lm/lmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/lm/lmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/l
-mr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/public/lm/lmri12.pfb><C:/Program Files/MiKTeX 2.
-9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
-lic/lm/lmsy8.pfb>
-Output written on z1908116_research_paper.pdf (15 pages, 232127 bytes).
+{C:/Pro
+gram Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9
+/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/
+lm/lm-mathex.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/
+Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}<C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
+e1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi
+12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/public/lm/lmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+lm/lmri12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy8.pfb>
+Output written on z1908116_research_paper.pdf (15 pages, 232123 bytes).
 PDF statistics:
  109 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

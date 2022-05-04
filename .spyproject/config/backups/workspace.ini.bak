@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['analysis.py', 'presentation_outputs.py']
+recent_files = ['analysis.py', 'presentation_outputs.py', 'scratchwork.py', 'paper_outputs.py']
 

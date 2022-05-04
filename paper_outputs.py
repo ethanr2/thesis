@@ -25,25 +25,56 @@ from bokeh.layouts import row, column
 # Prepare results for paper
 from stargazer.stargazer import Stargazer
 
+TAB_PATH = "thesis_draft/latex_tables/"
+
+full_sample = pd.read_pickle("data/processed_data/full_sample_ns_data.pkl")
+coefs = pd.read_pickle("data/processed_data/bootstrap.pkl")
+model = smf.ols(
+    (
+        "ffr_shock ~ "
+        "  GRAYM + GRAY0 + GRAY1 + GRAY2"
+        "+ IGRYM + IGRY0 + IGRY1 + IGRY2"
+        "+ GRADM + GRAD0 + GRAD1 + GRAD2"
+        "+ IGRDM + IGRD0 + IGRD1 + IGRD2"
+        "+ GRAU0"
+    ),
+    data=full_sample,
+)
+stage1_tab = Stargazer([model.fit()]).render_latex()
+with open(TAB_PATH + "stage_1_tab.tex", "w") as file:
+    file.write(stage1_tab)
+#%%
+# Summary Statistics for Stage 2
+df = full_sample.loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
 pretty_df = (
     df.rename(
         {
             "ffr_shock": """\(FS_m\)""",
             "pure_shock": """\(\hat{\epsilon}_m\)""",
-            "stock_returns": "Stock Returns",
+            "stock_returns": """\(\Delta \log{(\text{S\&P500}_m)}\)""",
         },
         axis=1,
     )
     * 100
 )
-pretty_df.describe().to_latex(
-    "2nd_stage_summary_stats.tex",
-    float_format="%.4f",
-    caption="""Summary statistics for our final dataset. Note that all variables are reported as percentages.""",
-    label="SumStats",
-    escape=False,
+stage2_sum_stats = (
+    pretty_df.describe()
+    .to_latex(
+        float_format="%.4f",
+        # caption="""Summary statistics for our final dataset. Note that all variables are reported as percentages.""",
+        # label="SumStats",
+        escape=False,
+    )
+    .replace("%", "\%")
+    .split("\n")
 )
+stage2_sum_stats[4] = stage2_sum_stats[4].replace(".0000", "")
+stage2_sum_stats = "\n".join(stage2_sum_stats)
 
+with open(TAB_PATH + "stage_2_summary_stats.tex", "w") as file:
+    file.write(stage2_sum_stats)
+
+#%%
 stage3_1_mod = smf.ols("stock_returns ~ ffr_shock", data=df,)
 
 stage3_2_mod = smf.ols("stock_returns ~ pure_shock", data=df,)

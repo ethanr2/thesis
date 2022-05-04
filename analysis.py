@@ -174,10 +174,10 @@ def calc_diffs(raw_data):
 def get_data(source="data/NS.xlsx"):
     gb_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
     # Reminder to switch to GK data later.
-    # ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
-    ffr_shock = pd.read_csv(
-        "data/gk_data/mps_updated.csv", index_col=0, parse_dates=True
-    )
+    ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
+    # ffr_shock = pd.read_csv(
+    #     "data/gk_data/mps_updated.csv", index_col=0, parse_dates=True
+    # )
     raw_data = align_dates(gb_data, ffr_shock)
     diffs = calc_diffs(raw_data)
     data = (
@@ -248,13 +248,12 @@ def bootstrap(N, frac):
     return coefs
 
 
-# filtered data: .loc[:, ["ffr_shock", "pure_shock", "stock_returns"]].dropna()
 raw_data = get_data()
 full_sample = construct_indicator(raw_data)
-full_sample.to_pickle("data/processed_data/full_sample_gk_data.pkl")
+full_sample.to_pickle("data/processed_data/full_sample_ns_data.pkl")
 
-coefs = bootstrap(10000, 0.80)
-coefs.to_pickle("data/processed_data/bootstrap_gk_data.pkl")
+# coefs = bootstrap(10000, 0.80)
+# coefs.to_pickle("data/processed_data/bootstrap_ns_data.pkl")
 
 
 #%%
