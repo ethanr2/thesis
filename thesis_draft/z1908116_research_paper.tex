@@ -40,7 +40,7 @@
 	
 	More recent research has cast doubt on these "market-surprise" type indicators. \citeauthor{Nakamura2018} (\citeyear{Nakamura2018}) find evidence for the "Fed-information effect" - the Fed's policy announcements could reveal information about the state of the economy not currently available to market participants. This raises concerns about endogeneity because a portion of the price change could simply reflect income effects rather than pure monetary policy shocks. However, the Fed-information effect is not a settled debate. \cite{Bauer2020} dispute the existence and the relative importance of the Fed-information effect and offer a wide range of evidence from high frequency stock market prices to changes in professional forecast data.
 	
-	I propose a way to measure the Fed-information effect essentially by constructing an instrument for the Fed's information and then purging this endogenous variation from market surprise indicators. This will let us determine whether the Fed-information effect exists and how much it will bias our estimates of the effect of monetary policy.
+	We propose a way to measure the Fed-information effect essentially by constructing an instrument for the Fed's information and then purging this endogenous variation from market surprise indicators. This will let us determine whether the Fed-information effect exists and how much it will bias our estimates of the effect of monetary policy.
 	
 	\section{Literature Review}
 	There are alternative approaches for deriving monetary policy shock indicators that are likely robust to the Fed-information effect. For instance, the \citeauthor{Romer2004} (henceforth RR04) indicator is derived using the Federal Reserve's Greenbook forecasts. These forecasts are made before each Federal Open Market Committee (FOMC) meeting and they serve an important role in policy decisions. The indicator is derived by running the following regression: 
@@ -92,14 +92,14 @@
 		y_m &= \beta_0 + \beta_1FS_m + u \tag{4} \label{eq3} \\ 
 		\mathrm{Cov}(FS_m, u) &\neq 0 
 	\end{align*}
-	This is source of endogeneity is the Fed-information effect.
+	This source of endogeneity is the Fed-information effect.
 	\section{Data}
-	We have several sources of time-series data. To measure and test the existence of the Fed information effect, we must first derive a "purified" version of \(FS_m\). We will essentially estimate equation \ref{model} and then use the residual \(\hat{\epsilon}_m\) as our indicator of monetary policy shocks. For \(X_m\), we use data from the Federal Reserve's Greenbook forecasts. These forecasts are made publicly available with a lag of 5 years. The forecasts are made before every scheduled FOMC meeting and they inform policy decisions. The forecasts are made under the assumption of no monetary policy shocks. For \(FS_m\) itself, our sample is limited because the data is proprietary. \cite{Gertler2015} have graciously made their data publicly available. We will use the change in the forecast of interest rates implied by three month ahead FFR futures. Each observation of \(FS_m\) is based on the difference between the futures price 20 minutes after the policy decision of FOMC meeting \(m\) is announced and 10 minutes before the announcement. We use a model very similar to that of \cite{Romer2004}:
+	To measure and test the existence of the Fed information effect, we must first derive a "purified" version of \(FS_m\). We have several sources of time-series data. We will essentially estimate equation \ref{model} and then use the residual \(\hat{\epsilon}_m\) as our indicator of monetary policy shocks. For \(X_m\), we use data from the Federal Reserve's Greenbook forecasts. These forecasts are made publicly available with a lag of 5 years. The forecasts are made before every scheduled FOMC meeting and they inform policy decisions. The forecasts are made under the assumption of no monetary policy shocks. For \(FS_m\) itself, our sample is limited because the data is proprietary. \cite{Nakamura2018} have graciously made their data publicly available. We will use the change in the forecast of interest rates implied by three month ahead FFR futures. Each observation of \(FS_m\) is based on the difference between the futures price 20 minutes after the policy decision of FOMC meeting \(m\) is announced and 10 minutes before the announcement. We use a model very similar to that of \cite{Romer2004}:
 	\begin{align*}
 		FS_m =  \alpha &+ \sum_{i=0}^{2} \gamma_i \widetilde{\Delta y}_{mi} + \sum^2_{i=0} \lambda_i \left(\widetilde{\Delta y}_{mi}-\widetilde{\Delta y}_{m-1,i}\right) \tag{5} \label{ep_hat_model} \\
 		&+\sum^{2}_{i=0} \phi_i \tilde{\pi}_{mi} + \sum^2_{i=0} \theta_i \left(\tilde{ \pi}_{mi}-\tilde{ \pi}_{m-1,i}\right) + \rho \tilde{u}_{m0} + \epsilon_m
 	\end{align*}
-	For variable definitions see table \ref{gbvars}. Several adjustments are made to the Romer and Romer model. All lagged terms are excluded because this represents information already available to the public, but this information should already be purged from \(FS_m\) by assumption. Market prices reflect all information publicly available. Similarly, we exclude the \(ffrb_m\) term because this is also public information and there is little evidence of mean reversion in \(FS_m\). 
+	For variable definitions see Table \ref{gbvars}. Several adjustments are made to the Romer and Romer model. All lagged terms are excluded because this represents information already available to the public, but this information should already be purged from \(FS_m\) by assumption. Market prices reflect all information publicly available. Similarly, we exclude the \(ffrb_m\) term because this is also public information and there is little evidence of mean reversion in \(FS_m\). 
 	\begin{table}[ht]
 		\centering
 		\begin{tabular}{p{0.30\linewidth}  p{0.6\linewidth}}
@@ -119,13 +119,33 @@
 	
 	After obtaining our indicator, we will then need to estimate the effect of monetary policy on some dependent variable. Typically, monetary policy shock indicators are used to estimate the dynamic effects on real output or inflation. But \cite{Bauer2020} provide a compelling alternative: the change in the logarithm of S\&P500 stock market price index around each FOMC meeting. Indeed, Bauer and Swanson estimate equation \ref{eq3} directly. Unfortunately, due to data limitations we cannot use high frequency prices for this process. The best we can do is use 24 hour changes in the price of the S\&P500. This is not ideal because the change in prices could be contaminated by non-FOMC news such as a BLS job report released on the same day as an FOMC announcement. The findings in \cite{Gurkaynak2011} indicate that for changes in the price of a wide variety of assets, the difference between a 30 window and a 24 hour window is small overall. Furthermore, this would really only cause problems for our purposes if the confounders are correlated with our regressors. 24 hour data on S\&P500 prices is available from \textit{Yahoo Finance}. 
 	\section{Empirical Analysis}
-	\begin{table}
+	\subsection{Purified Indicator Derivation}
+	The first stage of the regression on its own warrants some discussion. 	We estimate equation \ref{ep_hat_model} and report the results in Table \(\ref{stage1_reg}\). Almost every coefficient is statistically insignificant. Only \(\tilde{\pi}_{m,0}\) - the Fed's quarterly inflation nowcast - has a significant impact on unexpected rate hikes at the 5\% confidence level. Theory suggests that all the coefficients should be positive except for the unemployment nowcast, yet the signs of the coefficients do not have any discernible pattern. For instance, even \(\tilde{\pi}_{m,1}\) - the 1 quarter-ahead forecast of inflation - has a negative effect with a much larger (albeit, statistically insignificant) magnitude than the nowcast effect. Then at two quarters head, the inflation forecasts go back to having a positive effect. If the Fed-information effect exists, we should at least expect each state variable forecast to have consistent signs. With so many parameters, we should probably expect to have at least one significant variable in our regression just by random chance. All of this suggests that the Fed-information effect is weak if it exists at all. 
+
+	That being said, equation \ref{ep_hat_model} should not be interpreted as structural and the main point of interest is not on the coefficients of the first stage regression. We are mostly interested in the residual term, which serves as our indicator of the stance of monetary policy. We plot \(FS_m\) as our baseline indicator and the residual from the regression on Figure \ref{new_ind}. The two time series typically move in the same direction but there do appear to be some important differences. For instance, \(FS_m\) appears to have a larger magnitude whenever the two time series are positive, while the magnitude of \(\hat{\epsilon}\) is usually larger when both time series are negative. The difference between the two indicators appears to become greater over time. 
+	
+	\begin{table}[H]
+		\centering
+		\include{latex_tables/stage_1_tab.tex}
+		\caption{Results for the first stage of our regression. In this table, \(FS_m\) is measured in basis points but the remaining variables are measured in percentages. The reported coefficients should be interpreted as follows: a 1\% increase in the inflation nowcast causes a \(1.148\) basis point increase in interest rates.}
+		\label{stage1_reg}
+	\end{table}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{charts/new_indicator.png}
+		\caption{\label{new_ind} The baseline indicator (provided by \citeauthor{Nakamura2018}) and our new purified indicator.}
+	\end{figure}
+	\newpage
+	\subsection{Estimating the Impact on Stock Prices}
+	Summary statistics for all the data used in these regressions are presented in Table \ref{SumStats}. There are two tests we will run to evaluate the Fed-information effect hypothesis. As mentioned previously, \cite{Bauer2020} estimate the following equation, which will act as our restricted model:
+	\begin{table}[H]
 		\centering
 		\include{latex_tables/stage_2_summary_stats.tex}
 		\caption{Summary statistics for our final dataset. Note that all variables are reported as percentages.}
 		\label{SumStats}
 	\end{table}
-	Summary statistics for all the data used in these regressions are presented in table \ref{SumStats}. There are multiple tests we will run to evaluate the Fed-information effect hypothesis. As mentioned previously, \cite{Bauer2020} estimate the following equation, which will act as our restricted model:
+	
 	\[
 	\Delta \log{(\text{S\&P500}_m)} = \beta^R_0 + \beta^R_1 FS_m + u \tag{6} \label{rest}
 	\]
@@ -134,46 +154,38 @@
 		\Delta \log{(\text{S\&P500}_m)} &= \delta_0 + \delta_1 \hat{\epsilon}_m + w \tag{8} \label{trumod}
 	\end{align*}
 	Here, equation \ref{trumod} is the most direct representation of the "true model" if the Fed information effect is statistically significant. Note that the exclusion of \(\hat{i}_m\) from equation \ref{trumod} should not make a difference because \(\mathrm{Cov}(\hat{i}_m, \hat{\epsilon}_m) = 0\) by construction.
+	
 	\begin{table}[!htbp] \centering
-		\begin{tabular}{@{\extracolsep{5pt}}lcc}
-			\\[-1.8ex]\hline
-			\hline \\[-1.8ex]
-			& \multicolumn{2}{c}{\textit{Dependent variable:} \(\Delta \log{(\text{S\&P500}_m)}\)} \
-			\cr \cline{2-3}
-			\\[-1.8ex] & (1) & (2) \\
-			\hline \\[-1.8ex]
-			Intercept & 0.002$^{*}$ & 0.002$^{*}$ \\
-			& (0.001) & (0.001) \\
-			\(FS_m\) & -6.518$^{**}$ & \\
-			& (2.601) & \\
-			\(\hat{\epsilon}_m\) & & -7.154$^{**}$ \\
-			& & (2.919) \\
-			\hline \\[-1.8ex]
-			Observations & 110 & 110 \\
-			$R^2$ & 0.055 & 0.053 \\
-			Adjusted $R^2$ & 0.046 & 0.044 \\
-			Residual Std. Error & 0.011(df = 108) & 0.011(df = 108)  \\
-			F Statistic & 6.280$^{**}$ (df = 1.0; 108.0) & 6.007$^{**}$ (df = 1.0; 108.0) \\
-			\hline
-			\hline \\[-1.8ex]
-			\textit{Note:} & \multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
-		\end{tabular}
-	\caption{Regression results.}
+		\include{latex_tables/stage_2_regression.tex}
+	\caption{2nd stage regression results. Both \(FS_m\) and \(\hat{\epsilon_m}\) are measured in percentages. The coefficients should thus be interpreted as elasticity estimates.}
 	\label{finalReg}
 	\end{table}
 
-	Regression results are reported in table \ref{finalReg}. The coefficients are fairly close to each other, but there is a surprisingly large difference in standard errors. With these parameter estimates, we can derive the Wu-Hausman test statistic.
+	Regression results are reported in Table \ref{finalReg}. The difference between our two coefficients is somewhat larger than expected given the first stage results. With these parameter estimates, we can derive the Wu-Hausman test statistic.
 	\begin{align*}
 		H_0: &\delta_1 \text{ and } \beta_1^R \text{ are consistent.} \\
 		H_a: &\delta_1 \text{ is consistent but } \beta_1^R \text{ is inconsistent.} \\
 		\text{Test statistic: } &H = \frac{(\hat{\delta}_1-\hat{\beta}_1^R)^2}{\mathrm{Var}(\hat{\delta}_1)-\mathrm{Var}(\hat{\beta}_1^R)} \sim \chi^2_1 \\
-		&H = \frac{( -7.154+6.518)^2}{2.919^2- 2.601^2} = .2304
+		&H = \frac{(-3.899+4.619)^2}{2.252^2 - 2.097^2} = 0.7673
 	\end{align*}
-	Our Wu-Hausman test statistic implies a P-value of 63.12\%, which is statistically insignificant. We have insufficient evidence to reject our null hypothesis.
+	Our Wu-Hausman test statistic implies a P-value of 38.1\%, which is statistically insignificant. We have insufficient evidence to reject our null hypothesis. As a robustness check, we will also take a more direct approach. We can directly bootstrap the distribution of \(\hat{\delta}_1-\hat{\beta}_1^R\) and test the following:
+	\begin{align*}
+		H_0: &\delta_1 = \beta_1^R \\
+		H_a: &\delta_1 - \beta_1^R\leq0 
+	\end{align*}
+	We ran 10,000 trials with 80\% of the sample included in each trial. A histogram and a PDF estimated with a kernel density estimator are shown in Figure \ref{bootstrap}. With a p-value of 82.1\% we fail to reject the null in this case as well. From both of these tests, there is no evidence for the existence of the Fed-information effect. 
+	 
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{charts/bootstrap_ns_95sample.png}
+		\caption{\label{bootstrap} Histogram and KDE approximating the density function of \(\delta_1 - \beta_1^R\).}
+	\end{figure}
 	\section{Conclusion} 
 		Understanding the strength of monetary policy is crucially important for the purpose of macroeconomic stabilization. Endogeneity is always a concern when constructing monetary policy indicators. The Fed-information effect would imply our estimates of the effectiveness of monetary policy is systematically biased and attenuated. The literature is divided on whether this effect actually exists. \cite{Nakamura2018} argue that the Fed information effects exists and while \cite{Bauer2020} come to the opposite conclusion. Based on the above results, I find no evidence that the Fed-information effect exists.
 		
-		I find these results rather surprising. The premise of the Fed-information effect is highly sound on theoretical grounds and very plausible based on the relative accuracy of the Federal Reserves forecasts over private sector forecasts as found in \cite{Romer2000}. One possible explanation is that the sample of Romer and Romer's 2000 paper is too narrow. Their largest samples cover less than 10 years of data from the 1990s, whereas my sample covers 14 years of more recent data. Its possible Romer and Romer's paper has an external validity problem - neither the private sector nor the Fed's forecasts are static. They both improve forecasts over time based on the accuracy of previous forecasts. Its possible that the gap in accuracy has closed over time, meaning the Fed has less private information hidden from the public. This in and of itself may have implications for monetary policy makers.
+		We find these results rather surprising. The premise of the Fed-information effect is highly sound on theoretical grounds and very plausible based on the relative accuracy of the Federal Reserves forecasts over private sector forecasts as found in \cite{Romer2000}. One possible explanation is that the sample of Romer and Romer's 2000 paper is too narrow. Their largest samples cover less than 10 years of data from the 1990s, whereas our sample covers 20 years of more recent data. Its possible Romer and Romer's paper has an external validity problem - neither the private sector nor the Fed's forecasts are static. They both improve forecasts over time based on the accuracy of previous forecasts. Its possible that the gap in accuracy has closed over time, meaning the Fed has less private information hidden from the public. This in and of itself may have implications for monetary policy makers.
+		
+		It is notable that the point estimate from Table \ref{finalReg} and most of the distribution in Figure \ref{bootstrap} imply that \(\delta_1 - \beta_1^R\) is slightly positive. Strictly speaking, we cannot say its different from zero but the possibility of a positive result is very difficult to explain. The Fed-information effect should attenuate the estimate of the impact of monetary policy, resulting in a slope coefficient closer to zero. The most likely explanation is that equation \ref{ep_hat_model} is misspecified. It only includes forecasts of state variables two quarters into the future, but the full effects of monetary policy are unlikely to be completely realized until two or three years after the rate decision. We adopted Romer and Romer's specification but it is likely they only choose to include 2 quarter ahead forecasts due to data limitations in the very early Greenbook forecasts from the 70s. It is highly possible that the Fed's policy regime has shifted more towards "targeting the forecast" \citep{Svensson2020}. If so, we would need to look further into the future to truly capture all the information the Fed uses to inform policy decisions. 
 		
 		The central argument of \cite{Nakamura2018} is based on how forecasts from the \textit{Blue Chip Economic Indicators} survey change in response to monetary policy surprises. For example, they find that inflation forecasts tend to increase after unexpected rate hikes, inconsistent with macroeconomic intuition. The discrepancy with my results could be explained by the fact that our data uses a much tighter window. This is crucial for our identification strategy. By limiting our window of stock price changes to only 24 hour changes, we can be more confident that we exclude any confounding factors. But the \textit{Bluechip} forecasts are monthly forecasts, so we do not have a good idea of what it is that the forecasters are responding to. 
 		

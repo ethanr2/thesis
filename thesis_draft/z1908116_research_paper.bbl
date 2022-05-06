@@ -177,4 +177,27 @@ Romer, C\BPBI D.%
 \begin{APACrefDOI} \doi{10.1257/0002828042002651} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
+\bibitem [\protect \citeauthoryear {%
+Svensson%
+}{%
+Svensson%
+}{%
+{\protect \APACyear {2020}}%
+}]{%
+Svensson2020}
+\APACinsertmetastar {%
+Svensson2020}%
+\begin{APACrefauthors}%
+Svensson, L\BPBI E.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2020}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {{What rule for the federal reserve? Forecast targeting}}
+  {{What rule for the federal reserve? Forecast targeting}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{International Journal of Central Banking}{16}{5}{}.
+\PrintBackRefs{\CurrentBib}
+
 \end{thebibliography}

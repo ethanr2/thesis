@@ -3,6 +3,12 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: z1908116_research_paper.aux
 Reallocating 'name_of_file' (item size: 1) to 8 items.
 The style file: apacite.bst
+Reallocating 'name_of_file' (item size: 1) to 29 items.
+A level-1 auxiliary file: latex_tables/stage_1_tab.aux
+Reallocating 'name_of_file' (item size: 1) to 39 items.
+A level-1 auxiliary file: latex_tables/stage_2_summary_stats.aux
+Reallocating 'name_of_file' (item size: 1) to 36 items.
+A level-1 auxiliary file: latex_tables/stage_2_regression.aux
 Reallocating 'name_of_file' (item size: 1) to 5 items.
 Reallocating 'glb_str_end' (item size: 4) to 20 items.
 Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
@@ -15,44 +21,44 @@ Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: refs.bib
 apacite.bst [2013/07/21 v6.03 APA bibliography style]
-You've used 6 entries,
+You've used 7 entries,
             6951 wiz_defined-function locations,
-            1314 strings with 11844 characters,
-and the built_in function-call counts, 11804 in all, are:
-= -- 1463
-> -- 89
-< -- 576
-+ -- 620
-- -- 12
-* -- 794
-:= -- 2265
-add.period$ -- 24
-call.type$ -- 6
-change.case$ -- 102
+            1323 strings with 12085 characters,
+and the built_in function-call counts, 13389 in all, are:
+= -- 1662
+> -- 99
+< -- 647
++ -- 692
+- -- 14
+* -- 892
+:= -- 2555
+add.period$ -- 28
+call.type$ -- 7
+change.case$ -- 119
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 291
-empty$ -- 443
-format.name$ -- 152
-if$ -- 2195
+cite$ -- 14
+duplicate$ -- 327
+empty$ -- 511
+format.name$ -- 166
+if$ -- 2502
 int.to.chr$ -- 0
-int.to.str$ -- 18
+int.to.str$ -- 21
 missing$ -- 0
-newline$ -- 166
-num.names$ -- 48
-pop$ -- 152
+newline$ -- 188
+num.names$ -- 56
+pop$ -- 175
 preamble$ -- 1
-purify$ -- 24
+purify$ -- 28
 quote$ -- 0
-skip$ -- 755
+skip$ -- 875
 stack$ -- 0
-substring$ -- 677
-swap$ -- 175
-text.length$ -- 12
+substring$ -- 756
+swap$ -- 199
+text.length$ -- 14
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 480
+type$ -- 560
 warning$ -- 0
-while$ -- 47
+while$ -- 52
 width$ -- 0
-write$ -- 204
+write$ -- 228

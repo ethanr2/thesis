@@ -18,7 +18,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 
-TRUNC = (dt(1994, 2, 1), dt(2015, 1, 1))
+TRUNC = (dt(1994, 2, 1), dt(2014, 3, 20))
 COLS = {
     "gRGDP": ("gRGDPB2", "gRGDPB1", "gRGDPF0", "gRGDPF1", "gRGDPF2", "gRGDPF3"),
     "gPGDP": ("gPGDPB2", "gPGDPB1", "gPGDPF0", "gPGDPF1", "gPGDPF2", "gPGDPF3"),
@@ -173,8 +173,17 @@ def calc_diffs(raw_data):
 
 def get_data(source="data/NS.xlsx"):
     gb_data = get_var("gRGDP").join(get_var("gPGDP")).join(get_var("UNEMP"))
-    # Reminder to switch to GK data later.
-    ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
+    # Orginal NS18 sample:
+    # ffr_shock = pd.read_excel(source, sheet_name="shocks", index_col=0)
+    # Full NS18 Sample:
+    ffr_shock = pd.read_excel(
+        "data/NS_95Sample.xlsx",
+        sheet_name="PolicyNewsShocks1995",
+        index_col="date_daily",
+        parse_dates=True,
+    )
+    ffr_shock.index.name = "fomc"
+    ffr_shock["ff.shock.0"] = ffr_shock["FFR_shock"]
     # ffr_shock = pd.read_csv(
     #     "data/gk_data/mps_updated.csv", index_col=0, parse_dates=True
     # )
@@ -197,10 +206,10 @@ def construct_indicator(data, resample=False):
     model = smf.ols(
         (
             "ffr_shock ~ "
-            "  GRAYM + GRAY0 + GRAY1 + GRAY2"
-            "+ IGRYM + IGRY0 + IGRY1 + IGRY2"
-            "+ GRADM + GRAD0 + GRAD1 + GRAD2"
-            "+ IGRDM + IGRD0 + IGRD1 + IGRD2"
+            "  GRAY0 + GRAY1 + GRAY2"
+            "+ IGRY0 + IGRY1 + IGRY2"
+            "+ GRAD0 + GRAD1 + GRAD2"
+            "+ IGRD0 + IGRD1 + IGRD2"
             "+ GRAU0"
         ),
         data=data,
@@ -241,7 +250,11 @@ def bootstrap(N, frac):
     t0 = time()
     for i in range(N):
         samples.append(construct_indicator(raw_data.loc[sample_ind[i], :], True))
-        print(i, round(time() - t0, 2))
+        elapsed = time() - t0
+        remaining = divmod(round((N - i) / ((i + 1) / elapsed), 2), 60)
+        print(
+            i, int(elapsed), "Remaining: {} min, {:.2f} sec".format(int(remaining[0]), remaining[1])
+        )
 
     samples = pd.Series(samples)
     coefs = samples.apply(regressions)
@@ -250,10 +263,10 @@ def bootstrap(N, frac):
 
 raw_data = get_data()
 full_sample = construct_indicator(raw_data)
-full_sample.to_pickle("data/processed_data/full_sample_ns_data.pkl")
+full_sample.to_pickle("data/processed_data/95sample_ns_data.pkl")
 
-# coefs = bootstrap(10000, 0.80)
-# coefs.to_pickle("data/processed_data/bootstrap_ns_data.pkl")
+coefs = bootstrap(10000, 0.80)
+coefs.to_pickle("data/processed_data/bootstrap_ns_95sample_data.pkl")
 
 
 #%%

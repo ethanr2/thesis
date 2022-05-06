@@ -27,7 +27,7 @@ NIUred = (200, 16, 46)
 NIUpantone = (165, 167, 168)
 
 full_sample = pd.read_pickle("data/processed_data/full_sample.pkl")
-coefs = pd.read_pickle("data/processed_data/bootstrap.pkl")
+coefs = pd.read_pickle("data/processed_data/bootstrap_ns_95sample_data.pkl")
 coefs
 #%%
 
@@ -255,7 +255,7 @@ p_label = Label(
     x=1.0, y=0.15, text="P(δ - β≥0)={:.1f}%".format(p_val * 100), text_font_size="14pt"
 )
 p4.add_layout(p_label)
-export_png(p4, filename="presentation/charts/bootstrap.png")
+export_png(p4, filename="presentation/charts/bootstrap_ns_95sample.png")
 
 show(column(p1, p2, p3, p4))
 
